@@ -1,0 +1,20 @@
+
+ 
+# Intellij
+.idea/
+.settings/
+.vs/
+.allure/
+allure-results/
+libspecs/
+bin/
+*.iml
+*.iws
+*.classpath
+
+# Maven
+
+**/target/
+**/test-output/
+
+**/properties/local.properties

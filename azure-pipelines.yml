@@ -1,0 +1,85 @@
+# Variable 'testSuite' was defined in the Variables tab
+name: $(majorMinorVersion).$(patchVersion)
+
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    exclude:
+    - .pipelines/*
+
+# Cron Schedules have been converted using UTC Time Zone and may need to be updated for your location
+variables:
+  BuildParameters.mavenPOMFile: pom.xml
+  BuildParameters.TargetFolder: $(build.artifactstagingdirectory)
+  majorMinorVersion: 1.0
+  patchVersion: $[counter(variables['majorMinorVersion'], 0)]
+
+schedules:
+- cron: 0 4 * * *
+  branches:
+    include: [ main ] # which branches the schedule applies to
+    exclude: [ allureWork ] # which branches to exclude from the schedule
+
+jobs:
+- job: Job_1
+  displayName: java on selfhosted
+  pool:
+    name: Basic Client POC
+  steps:
+  - checkout: self
+
+  - task: Maven@3
+    displayName: Maven - execute tests
+    inputs:
+      mavenPomFile: '$(BuildParameters.mavenPOMFile)'
+      goals: 'test clean'
+      options: '-P $(testSuite) -Dbrowser=chrome -Dheadless=true -Ddocker=false -Dproxy=true'
+      publishJUnitResults: true
+      testResultsFiles: '**/junitreports/TEST-*.xml'
+      javaHomeOption: 'JDKVersion'
+      mavenVersionOption: 'Default'
+      mavenAuthenticateFeed: false
+      effectivePomSkip: false
+      sonarQubeRunAnalysis: false
+      findBugsRunAnalysis: true
+
+  - task: Maven@3
+    condition: succeededOrFailed()
+    displayName: Maven - generate allure report
+    inputs:
+      mavenPomFile: '$(BuildParameters.mavenPOMFile)'
+      goals: 'allure:report'
+      publishJUnitResults: false
+
+  - task: ArchiveFiles@2
+    condition: succeededOrFailed()
+    displayName: 'Copy allure report'
+    inputs:
+      rootFolderOrFile: 'target/site/allure-maven-plugin/'
+      includeRootFolder: false
+      archiveType: 'zip' # Options: zip, 7z, tar, wim
+      archiveFile: '$(Build.ArtifactStagingDirectory)/java-allure-report-$(Build.BuildId).zip'
+      replaceExistingArchive: true
+
+  - publish: '$(Build.ArtifactStagingDirectory)/java-allure-report-$(Build.BuildId).zip'
+    displayName: 'Publish allure report'
+    condition: succeededOrFailed()
+    artifact: allure-report
+
+  - task: import-testresult-gherkin@1
+    condition: succeededOrFailed()
+    displayName: 'Publish test results to test plan with solidify extension'
+    inputs:
+      sourcePath: '$(System.DefaultWorkingDirectory)/target/surefire-reports/'
+      testPlan: 'testngTestPlan'
+      specFileName: 'testng-results'
+      createTC: true
+      ignoreTestSteps: true
+      automatedTestNameFromMethod: true
+      fileType: 'TestNG'
+      configuration: 'TEST'
+      configurationFallback: 'defaultToTestPlan'
+    env:
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)

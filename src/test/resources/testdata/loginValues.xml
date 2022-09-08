@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestCases>
+  <Test>
+    <UserName>Data 1</UserName> 
+    <Password>User 1</Password>
+    <Id>1</Id>
+  </Test>
+  <Test>
+    <UserName>Data 2</UserName>
+    <Password>User 2</Password>
+    <Id>1</Id>
+  </Test>
+  <Test>
+    <UserName>blabla1</UserName>
+    <Password>dsadapok</Password>
+    <Id>1</Id>
+  </Test>
+  <Test>
+    <UserName>tomsmith</UserName>
+    <Password>321321!</Password>
+    <Id>1</Id>
+  </Test>
+</TestCases>

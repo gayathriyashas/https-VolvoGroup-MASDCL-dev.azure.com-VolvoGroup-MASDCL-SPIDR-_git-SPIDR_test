@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="11.0.11" class="java.beans.XMLDecoder">
+ <object class="com.volvo.project.components.fileoperations.UserSettings" id="UserSettings0">
+  <void class="com.volvo.project.components.fileoperations.UserSettings" method="getField">
+   <string>fieldOne</string>
+   <void method="set">
+    <object idref="UserSettings0"/>
+    <int>10000</int>
+   </void>
+  </void>
+  <void class="com.volvo.project.components.fileoperations.UserSettings" method="getField">
+   <string>fieldTwo</string>
+   <void method="set">
+    <object idref="UserSettings0"/>
+    <string>Test Automation Academy</string>
+   </void>
+  </void>
+ </object>
+</java>
