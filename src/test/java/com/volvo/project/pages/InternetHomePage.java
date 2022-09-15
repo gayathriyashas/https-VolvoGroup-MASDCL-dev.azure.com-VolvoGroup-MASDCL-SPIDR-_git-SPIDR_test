@@ -34,6 +34,9 @@ public class InternetHomePage extends PageObject {
     @FindBy(xpath = "//div[@class='ng-star-inserted']//span[contains(text(),'Volvo Products Staging')]")
     private WebElement volvoProductsStagingSubMenuButton;
 
+    @FindBy(xpath = "//div[@class='ng-star-inserted']//span[contains(text(),'Volvo Cost Staging')]")
+    private WebElement volvoCostStagingSubMenuButton;
+
     @FindBy(xpath = "//div[@class='cdk-overlay-container']//span[contains(text(),' Logout ')]")
     private WebElement logoutLink;
 
@@ -116,6 +119,16 @@ public class InternetHomePage extends PageObject {
         volvoProductsStagingSubMenuButton.click();
         //return new InternetHomePage(driver);
     }
+
+    @Step("Select Volvo Cost Staging Sub Menu")
+    public void volvo_Cost_Staging_SubMenu() throws InterruptedException {
+        Thread.sleep(10000);
+        WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(60));
+        wait.until(ExpectedConditions.elementToBeClickable(volvoCostStagingSubMenuButton));
+        volvoCostStagingSubMenuButton.click();
+        //return new InternetHomePage(driver);
+    }
+
     @Step("Search Record")
     public void searchRecord(String value) throws InterruptedException {
         Thread.sleep(10000);

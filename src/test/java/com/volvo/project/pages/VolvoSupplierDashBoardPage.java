@@ -201,8 +201,8 @@ public class VolvoSupplierDashBoardPage extends PageObject {
         }
 */
         //Thread.sleep(10000);
-        WebElement clickMaximizeElement = driver.findElement(By.xpath("//div[contains(text(),' Download / Upload Progress ')]//parent::div//i[@class='pull-right fa fa-window-maximize showme btns ng-star-inserted']"));
-        WebElement clickRefreshElement = driver.findElement(By.xpath("//div[contains(text(),' Download / Upload Progress ')]//parent::div//i[@class='pull-right fa fa-refresh showme btns ng-star-inserted']"));
+        //WebElement clickMaximizeElement = driver.findElement(By.xpath("//div[contains(text(),' Download / Upload Progress ')]//parent::div//i[@class='pull-right fa fa-window-maximize showme btns ng-star-inserted']"));
+        WebElement clickRefreshElement = driver.findElement(By.xpath("//i[@class='fa fa-refresh']"));
 
         //this.moveToElement(uploadDownloadHeader);
         //obj.clickUsingJS(clickMaximizeElement);
