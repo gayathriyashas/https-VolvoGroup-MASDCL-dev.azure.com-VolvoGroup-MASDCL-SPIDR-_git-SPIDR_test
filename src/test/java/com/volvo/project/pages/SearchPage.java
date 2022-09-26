@@ -25,6 +25,9 @@ public class SearchPage extends PageObject {
     @FindBy(xpath = "//a[contains(text(), ' Edit')]")
     public WebElement editButton;
 
+    @FindBy(xpath = "//a[contains(text(), ' Delete')]")
+    public WebElement deleteButton;
+
     @FindBy(xpath = "//span[@class='ag-paging-row-summary-panel']/span[3]")
     public WebElement numberOfRecords;
 
