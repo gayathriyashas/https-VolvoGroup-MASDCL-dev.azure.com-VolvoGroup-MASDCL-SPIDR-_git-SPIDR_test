@@ -68,7 +68,7 @@ public class TestSuiteExampleSPIDR extends WebTestBase {
         objExcelFile.writeToExcel(filePath,2,4,"RRJ38869");
 
         supplierPage.clickChooseFileImportProductData();
-        supplierPage.refreshDownloadUploadProgress();
+        //supplierPage.refreshDownloadUploadProgress();
         supplierPage.getTotalProcessedRecordsUnderDownloadUploadProgress();
         //supplierPage.getValidRowsRecordsUnderDownloadUploadProgress();
         homePage.profileMenuApp();

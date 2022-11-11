@@ -18,6 +18,13 @@ public class ProductPage extends PageObject {
         super(driver);
     }
 
+    //sidebar
+    @FindBy(xpath = "//span[contains(text(), 'Category Specific Attributes')]")
+    WebElement categorySpecificArrtibutesTab;
+
+    @FindBy(xpath = "//span[contains(text(), 'Admin')]")
+    WebElement adminTab;
+
     //buttons
     @FindBy(xpath = "//a[contains(text(), ' Save')]")
     WebElement saveButton;
@@ -46,6 +53,9 @@ public class ProductPage extends PageObject {
 
    @FindBy(xpath = "//span[contains(text(), 'CS Enrichment Complete')]/../../../p/span")
     WebElement CSEnrichmentComplete;
+
+    @FindBy(xpath = "//span[contains(text(), 'Supplier Name')]/../../../p/span")
+    WebElement supplierName;
 
     //part Status dropdown
     @FindBy(xpath = "//span[contains(text(), 'Part Status')]/../../../p/span")
@@ -79,9 +89,35 @@ public class ProductPage extends PageObject {
     WebElement addInterchangeableLink;
 
     //categorization
+    @FindBy(xpath = "//span[contains(text(), 'MacKay Code')]/../../../p/span")
+    WebElement mackayCode;
+
     @FindBy(xpath = "//span[contains(text(), 'Taxonomy Node')]/../../../p/span")
     WebElement taxonomyNode;
 
-    @FindBy(xpath = "//span[contains(text(), 'MacKay Code')]/../../../p/span")
-    WebElement mackayCode;
+    @FindBy(xpath = "//span[contains(text(), 'VMRS Code')]/../../../p/span")
+    WebElement VMRSCode;
+
+    @FindBy(xpath = "//span[contains(text(), 'VMRS CK31')]/../../../p/span")
+    WebElement VMRSCK31;
+
+    @FindBy(xpath = "//span[contains(text(), 'VMRS CK32')]/../../../p/span")
+    WebElement VMRSCK32;
+
+    @FindBy(xpath = "//span[contains(text(), 'VMRS CK33')]/../../../p/span")
+    WebElement VMRSCK33;
+
+    //Review Attributes List
+    @FindBy(xpath = "//div[contains(text(), 'Branded Part')]")
+    WebElement reviewAttributeList_BrandedPart;
+
+    @FindBy(xpath = "//div[contains(text(), 'Supersession To')]")
+    WebElement reviewAttributeList_SupersessionTo;
+
+    @FindBy(xpath = "//div[contains(text(), 'Supersession From')]")
+    WebElement reviewAttributeList_SupersessionFrom;
+
+    //Admin
+    @FindBy(xpath = "//span[contains(text(), 'Manager Approval')]/../../../p/span")
+    WebElement managerApproval;
 }

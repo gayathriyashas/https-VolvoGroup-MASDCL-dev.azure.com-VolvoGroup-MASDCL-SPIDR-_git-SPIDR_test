@@ -11,7 +11,7 @@ public class InternetLoginPage extends PageObject {
     //private static final String URL_INTERNET_LOGIN_PAGE = "https://the-internet.herokuapp.com/login";
 
     //<!--QA URL-->
-    public static final String URL_INTERNET_LOGIN_PAGE = "https://wwglbn12562.vcn.ds.volvo.net/enable2020/login";
+    public static final String URL_INTERNET_LOGIN_PAGE = "http://wwglbn12567:81/enable2020/login?returnUrl=%2F";
 
     //<!--DEV URL-->
     //public static final String URL_INTERNET_LOGIN_PAGE = "http://wwglbn12567:81/enable2020/login";

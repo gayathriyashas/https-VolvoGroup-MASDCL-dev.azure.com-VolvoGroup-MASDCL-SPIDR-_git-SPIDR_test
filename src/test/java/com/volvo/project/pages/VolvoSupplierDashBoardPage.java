@@ -363,7 +363,7 @@ public class VolvoSupplierDashBoardPage extends PageObject {
         PageObject obj = new PageObject(driver);
         obj.scrollElementIntoView(downloadUploadHeader);
 
-        WebElement clickRefreshElement = driver.findElement(By.xpath("//div[contains(text(),' Download / Upload Progress ')]//parent::div//i[@class='pull-right fa fa-refresh showme btns ng-star-inserted']"));
+        WebElement clickRefreshElement = driver.findElement(By.xpath("//i[@class='fa fa-refresh']"));
         this.moveToElement(downloadUploadHeader);
         this.clickUsingJS(clickRefreshElement);
         System.out.println("clickRefreshElement clicked");
@@ -371,7 +371,7 @@ public class VolvoSupplierDashBoardPage extends PageObject {
         Thread.sleep(10000);
         try {
             // Multiple click to open multiple window
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 20; i++) {
                 Thread.sleep(10000);
                 Thread.sleep(5000);
                 this.moveToElement(downloadUploadHeader);
@@ -387,41 +387,52 @@ public class VolvoSupplierDashBoardPage extends PageObject {
 
     @Step("getTotalProcessedRecordsUnderDownloadUploadProgress")
     public String getTotalProcessedRecordsUnderDownloadUploadProgress() throws InterruptedException {
-            WebElement clickRefreshElement = driver.findElement(By.xpath("//div[contains(text(),' Download / Upload Progress ')]//parent::div//i[@class='pull-right fa fa-refresh showme btns ng-star-inserted']"));
-            WebElement totalProcessedRecordsElement = driver.findElement(By.xpath("(//div[@class='ag-body-viewport ag-layout-normal ag-row-animation']//span[contains(text(),'Part Upload Partial')])[1]/parent::common-html-render/parent::div/following-sibling::div[4]"));
-
+            WebElement clickRefreshElement = driver.findElement(By.xpath("//i[@class='fa fa-refresh']"));
+            WebElement totalProcessedRecordsElement;
             System.out.println("clickRefreshElement:"+clickRefreshElement);
-            System.out.println("totalProcessedRecordsElement: "+totalProcessedRecordsElement);
             String value = null;
-            for(int j=0;j<20;j++) {
+            boolean isLoaded = false;
+            int i = 15;
+            while(isLoaded == false || i > 0) {
+                i--;
                 Thread.sleep(10000);
                 Thread.sleep(10000);
                 Thread.sleep(10000);
                 this.moveToElement(downloadUploadHeader);
                 //this.clickUsingJS(downloadUploadHeader);
                 this.clickUsingJS(clickRefreshElement);
-            }
-            try{
-                for (int i = 0; i < 5; i++) {
-                    Thread.sleep(10000);
-                    //Thread.sleep(10000);
-                    this.moveToElement(downloadUploadHeader);
-                    this.clickUsingJS(downloadUploadHeader);
+                Thread.sleep(10000);
+                //Thread.sleep(10000);
+                System.out.println("Thread sleep");
+                this.moveToElement(downloadUploadHeader);
+                System.out.println("moved to header");
+                this.clickUsingJS(downloadUploadHeader);
+                System.out.println("click header");
+                try{
+                    totalProcessedRecordsElement = driver.findElement(By.xpath("//div[@class='ag-center-cols-container']//span[contains(text(),'all records passed validation')][1]/../../../div[7]"));
                     this.moveToElement(totalProcessedRecordsElement);
-                    System.out.println("downloadUploadHeader again Done:"+downloadUploadHeader);
-                    System.out.println("totalProcessedRecordsElement: "+totalProcessedRecordsElement);
+                System.out.println("Move tp processed records");
+                System.out.println("downloadUploadHeader again Done:"+downloadUploadHeader);
+                value = totalProcessedRecordsElement.getText();
+                System.out.println("totalProcessedRecordsElement: "+totalProcessedRecordsElement);
+                System.out.println(isLoaded);
 
-                    value = totalProcessedRecordsElement.getText().toString();
-                    System.out.println("totalProcessedRecordsElement: "+totalProcessedRecordsElement);
-                    //value = totalProcessedRecordsElement.getAttribute("innerText");
-                    //value = totalProcessedRecordsElement.getAttribute("value");
-                    System.out.println("Total Processed: " + value);
+
+                        Double.parseDouble(value) ;
+                        isLoaded = true;
+                        //value = totalProcessedRecordsElement.getAttribute("innerText");
+                        //value = totalProcessedRecordsElement.getAttribute("value");
+                        System.out.println("Total Processed: " + value);
+
+                }
+                catch (Exception e)
+                {
+
+                }
             }
-        }
-        catch (Exception e)
-        {
-            System.out.println("Some Exception happened-totalProcessedRecordsElement");
-        }
+            if(isLoaded == false) {
+                System.out.println("Some Exception happened-totalProcessedRecordsElement");
+            }
         return value;
     }
 
