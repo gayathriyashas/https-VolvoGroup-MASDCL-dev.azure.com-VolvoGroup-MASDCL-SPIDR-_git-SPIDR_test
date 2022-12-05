@@ -52,8 +52,9 @@ public class CostImportExport extends WebTestBase
         homePage.hamburgeIcon();
         homePage.stagingMenu();
         homePage.volvo_Cost_Staging_SubMenu();
+        homePage.searchRecord("Cost 1234");
+        homePage.verifyRecord("Cost 1234");
         homePage.profileMenuApp();
         homePage.logout();
-
     }
 }
