@@ -33,7 +33,7 @@ public class CostImportExport extends WebTestBase
         step("Cost file export - On Supplier dashboard, from 'Export All' widget, select 'Cost' Export type and click on Submit button");
         VolvoSupplierDashBoardPage supplierPage = new VolvoSupplierDashBoardPage(getDriver());
         supplierPage.verifySupplierDashboard();
-        supplierPage.exportCostData_RadioButton();
+        //supplierPage.exportCostData_RadioButton();
         supplierPage.downloadUploadProgressOperation();
         //VerifyZipFolderAndExtractFiles objZip = new VerifyZipFolderAndExtractFiles();
         String filePath = VerifyZipFolderAndExtractFiles.unZipFolder();
