@@ -2,15 +2,11 @@ package com.volvo.project.pages;
 
 import com.volvo.project.components.PageObject;
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import com.volvo.project.pages.InternetHomePage;
 
 import java.time.Duration;
 
@@ -19,7 +15,7 @@ public class SearchPage extends PageObject {
     @FindBy(xpath = "//div[@class='user-name ng-star-inserted']")
     public WebElement LoginDetailsLabel;
 
-    @FindBy(xpath = "//div[@role='row' and row-id='0']/following-sibling::[@class='ag-icon ag-icon-checkbox-unchecked']")
+    @FindBy(xpath = "//span[@class='ag-selection-checkbox']/..")
     public WebElement searchedItemCheckbox;
 
     @FindBy(xpath = "//a[contains(text(), ' Edit')]")
@@ -28,7 +24,7 @@ public class SearchPage extends PageObject {
     @FindBy(xpath = "//a[contains(text(), ' Delete')]")
     public WebElement deleteButton;
 
-    @FindBy(xpath = "//span[@class='ag-paging-row-summary-panel']/span[3]")
+    @FindBy(xpath = "//span[@class='ag-selection-checkbox']/..")
     public WebElement numberOfRecords;
 
     public SearchPage(WebDriver driver) {

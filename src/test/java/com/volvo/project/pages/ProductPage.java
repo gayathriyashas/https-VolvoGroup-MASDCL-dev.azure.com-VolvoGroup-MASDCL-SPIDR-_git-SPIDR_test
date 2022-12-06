@@ -18,6 +18,12 @@ public class ProductPage extends PageObject {
         super(driver);
     }
 
+    @FindBy(xpath =  "//span[@class='title-switch ng-star-inserted']")
+    WebElement viewDropDown;
+
+    @FindBy(xpath = "//div[@class='mat-menu-content']/button[1]/span")
+    WebElement noPreferenceView;
+
     //sidebar
     @FindBy(xpath = "//span[contains(text(), 'Category Specific Attributes')]")
     WebElement categorySpecificArrtibutesTab;
@@ -30,7 +36,7 @@ public class ProductPage extends PageObject {
     WebElement saveButton;
 
     @FindBy(xpath = "//button[contains(text(), 'Part Status')]")
-    WebElement partStatusDropdown;
+    public WebElement partStatusDropdown;
 
     @FindBy(xpath = "//button[contains(text(), 'Digital')]")
     WebElement digitalDropdown;
@@ -59,7 +65,7 @@ public class ProductPage extends PageObject {
 
     //part Status dropdown
     @FindBy(xpath = "//span[contains(text(), 'Part Status')]/../../../p/span")
-    WebElement partStatus;
+    public WebElement partStatus;
 
     @FindBy(xpath = "//span[contains(text(), 'eCommerce Status')]/../../../p/span")
     WebElement ecommerceStatus;
@@ -93,7 +99,7 @@ public class ProductPage extends PageObject {
     WebElement mackayCode;
 
     @FindBy(xpath = "//span[contains(text(), 'Taxonomy Node')]/../../../p/span")
-    WebElement taxonomyNode;
+    public WebElement taxonomyNode;
 
     @FindBy(xpath = "//span[contains(text(), 'VMRS Code')]/../../../p/span")
     WebElement VMRSCode;
@@ -120,4 +126,12 @@ public class ProductPage extends PageObject {
     //Admin
     @FindBy(xpath = "//span[contains(text(), 'Manager Approval')]/../../../p/span")
     WebElement managerApproval;
+
+    @Step("Change view to No Preference")
+    public void changeViewToNoPreference() throws InterruptedException {
+        viewDropDown.click();
+        Thread.sleep(1000);
+        noPreferenceView.click();
+        Thread.sleep(1000);
+    }
 }

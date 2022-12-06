@@ -28,7 +28,7 @@ public class InternetHomePage extends PageObject {
     @FindBy(id = "hamburgerButton")
     private WebElement hamburgeButton;
     @FindBy(xpath = "//input[@id='inputLogin3' or @placeholder='Search']")
-    private WebElement searchField;
+    public WebElement searchField;
     @FindBy(xpath = "//span[@title='Staging']")
     private WebElement stagingMenuButton;
     @FindBy(xpath = "//div[@class='ng-star-inserted']//span[contains(text(),'Volvo Products Staging')]")
@@ -39,6 +39,9 @@ public class InternetHomePage extends PageObject {
 
     @FindBy(xpath = "//div[@class='cdk-overlay-container']//span[contains(text(),' Logout ')]")
     private WebElement logoutLink;
+
+    @FindBy(xpath = "//span[contains(text(), 'Volvo Products Staging')]")
+    public WebElement productsStagingTab;
 
     public InternetHomePage(WebDriver driver) {
         super(driver);

@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Stories({@Story("user story 12345")})
 public class TestSuiteExampleSPIDR extends WebTestBase {
 
-    @ExcelDataProvider(fileName = "InternetLoginValues.xlsx",tab = "testCase1")
+    @ExcelDataProvider(fileName = "SupplierLoginValues.xlsx",tab = "testCase1")
     @Test(groups = {"smoke", "regression"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
     public void loginTo_SPIDR_Application(String name, String password,String col3) throws InterruptedException {
         dataProviderTestParameters.set(name + "," + password+", + col3 + ");
@@ -44,7 +44,7 @@ public class TestSuiteExampleSPIDR extends WebTestBase {
         homePage.logout();
     }
 
-    @ExcelDataProvider(fileName = "InternetLoginValues.xlsx",tab = "testCase1")
+    @ExcelDataProvider(fileName = "SupplierLoginValues.xlsx",tab = "testCase1")
     @Test(groups = {"smoke", "regression"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
     public void verifySupplierIsAbleToImportProductFileIntoSPIDRApplication_ValidFiles(String name, String password,String col3) throws Exception {
         dataProviderTestParameters.set(name + "," + password+", + col3 + ");

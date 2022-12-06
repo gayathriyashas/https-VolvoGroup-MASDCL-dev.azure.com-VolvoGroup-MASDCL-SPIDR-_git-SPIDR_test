@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Stories({@Story("user story 12345")})
 public class InternetTestSuiteDataProviderExampleLoginTest extends WebTestBase {
 
-    @ExcelDataProvider(fileName = "InternetLoginValues.xlsx",tab = "testCase1")
+    @ExcelDataProvider(fileName = "SupplierLoginValues.xlsx",tab = "testCase1")
     @Test(groups = {"smoke", "regression"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
     public void successfulLoginExcelDataProviderTest(String name, String password,String col3) {
         dataProviderTestParameters.set(name + "," + password+", + col3 + ");
