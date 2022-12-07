@@ -2,6 +2,7 @@ package com.volvo.project.pages;
 
 import com.volvo.project.components.PageObject;
 import io.qameta.allure.Step;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -18,6 +19,12 @@ public class ProductPage extends PageObject {
         super(driver);
     }
 
+    @FindBy(xpath =  "//span[@class='title-switch ng-star-inserted']")
+    WebElement viewDropDown;
+
+    @FindBy(xpath = "//div[@class='mat-menu-content']/button[1]/span")
+    WebElement noPreferenceView;
+
     //sidebar
     @FindBy(xpath = "//span[contains(text(), 'Category Specific Attributes')]")
     WebElement categorySpecificArrtibutesTab;
@@ -29,11 +36,14 @@ public class ProductPage extends PageObject {
     @FindBy(xpath = "//a[contains(text(), ' Save')]")
     WebElement saveButton;
 
+    @FindBy(xpath = "//button[contains(text(), 'Basic Info')]")
+    WebElement basicInfoDropdown;
+
     @FindBy(xpath = "//button[contains(text(), 'Part Status')]")
-    WebElement partStatusDropdown;
+    public WebElement partStatusDropdown;
 
     @FindBy(xpath = "//button[contains(text(), 'Digital')]")
-    WebElement digitalDropdown;
+    public WebElement digitalDropdown;
 
     @FindBy(xpath = "//button[contains(text(), 'Cross-Reference Data')]")
     WebElement crossReferenceDataDropdown;
@@ -43,23 +53,32 @@ public class ProductPage extends PageObject {
 
     //attributes
     @FindBy(xpath = "//span[contains(text(), 'Supplier Part Description')]/../../../p/span")
-    WebElement supplierPartDescription;
+    public WebElement supplierPartDescription;
 
     @FindBy(xpath = "//span[contains(text(), 'Internal Part Name')]/../../../p/span")
     WebElement internalPartName;
 
+    @FindBy(xpath = "//span[contains(text(), 'Brand')]/../../../p/span")
+    public WebElement brand;
+
     @FindBy(xpath = "//span[contains(text(), 'Branded Part')]/../../../p/span")
     WebElement brandedPart;
+
+    @FindBy(xpath = "//span[contains(text(), 'Manufacturer Name')]/../../../p/span")
+    public WebElement manufacturerName;
 
    @FindBy(xpath = "//span[contains(text(), 'CS Enrichment Complete')]/../../../p/span")
     WebElement CSEnrichmentComplete;
 
+   @FindBy(xpath = "//span[contains(text(), 'Part long Description (Brand)')]/../../../p/span")
+   public WebElement partLongDescBrand;
+
     @FindBy(xpath = "//span[contains(text(), 'Supplier Name')]/../../../p/span")
-    WebElement supplierName;
+    public WebElement supplierName;
 
     //part Status dropdown
     @FindBy(xpath = "//span[contains(text(), 'Part Status')]/../../../p/span")
-    WebElement partStatus;
+    public WebElement partStatus;
 
     @FindBy(xpath = "//span[contains(text(), 'eCommerce Status')]/../../../p/span")
     WebElement ecommerceStatus;
@@ -69,13 +88,13 @@ public class ProductPage extends PageObject {
 
     //Digital
     @FindBy(xpath = "//span[contains(text(), 'Metadata Title')]/../../../p/span")
-    WebElement metadataTitle;
+    public WebElement metadataTitle;
 
     @FindBy(xpath = "//span[contains(text(), 'Metadata Description')]/../../../p/span")
-    WebElement metadataDescription;
+    public WebElement metadataDescription;
 
     @FindBy(xpath = "//span[contains(text(), 'Metadata Keywords')]/../../../p/span")
-    WebElement metadataKeywords;
+    public WebElement metadataKeywords;
 
     //Supersession
     @FindBy(xpath = "//span[contains(text(), 'Supersession From')]/../../../p/span")
@@ -93,7 +112,7 @@ public class ProductPage extends PageObject {
     WebElement mackayCode;
 
     @FindBy(xpath = "//span[contains(text(), 'Taxonomy Node')]/../../../p/span")
-    WebElement taxonomyNode;
+    public WebElement taxonomyNode;
 
     @FindBy(xpath = "//span[contains(text(), 'VMRS Code')]/../../../p/span")
     WebElement VMRSCode;
@@ -120,4 +139,20 @@ public class ProductPage extends PageObject {
     //Admin
     @FindBy(xpath = "//span[contains(text(), 'Manager Approval')]/../../../p/span")
     WebElement managerApproval;
+
+    @Step("Change view to No Preference")
+    public void changeViewToNoPreference() throws InterruptedException {
+        viewDropDown.click();
+        Thread.sleep(1000);
+        noPreferenceView.click();
+        Thread.sleep(1000);
+    }
+
+    @Step("Open Basic Info")
+    public void openBasicInfo() throws InterruptedException {
+        if(driver.findElements(By.xpath("//span[contains(text(), 'Supplier Name')]/../../../p/span")).size() == 0) {
+            basicInfoDropdown.click();
+            Thread.sleep(1000);
+        }
+    }
 }
