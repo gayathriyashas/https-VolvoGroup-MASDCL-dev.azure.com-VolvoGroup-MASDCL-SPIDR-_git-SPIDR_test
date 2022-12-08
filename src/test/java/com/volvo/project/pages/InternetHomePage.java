@@ -40,7 +40,7 @@ public class InternetHomePage extends PageObject {
     @FindBy(xpath = "//div[@class='cdk-overlay-container']//span[contains(text(),' Logout ')]")
     private WebElement logoutLink;
 
-    @FindBy(xpath = "//span[contains(text(), 'Volvo Products Staging')]")
+    @FindBy(xpath = "//div[@class='MenuTop col-md-6 col-sm-5 col-xs-4']//span[contains(text(), 'Volvo Products Staging')]")
     public WebElement productsStagingTab;
 
     @FindBy(xpath = "//span[contains(text(), 'Volvo Products Staging')][2]")

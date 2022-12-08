@@ -12,6 +12,8 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.annotations.Test;
 
+import java.util.Arrays;
+
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -20,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CSTest extends WebTestBase {
 
     @ExcelDataProvider(fileName = "CSLoginValues.xlsx",tab = "testCase1")
-    @Test(groups = {"smoke", "regression"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
+    @Test(groups = {"smoke", "regression, CS"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
     public void loginTo_SPIDR_Application(String name, String password,String col3) throws InterruptedException {
         dataProviderTestParameters.set(name + "," + password+", + col3 + ");
         step("Launch Browser and logged into SPIDR Application");
@@ -40,7 +42,7 @@ public class CSTest extends WebTestBase {
     }
 
     @ExcelDataProvider(fileName = "CSLoginValues.xlsx",tab = "testCase1")
-    @Test(groups = {"smoke", "regression"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
+    @Test(groups = {"smoke", "regression, CS"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
     public void verifyNewPartsareSettoNewandAreUnderAssignTaxonomyShortcut(String name, String password,String col3) throws Exception {
         dataProviderTestParameters.set(name + "," + password+", + col3 + ");
         step("Launch Browser and logged into SPIDR Application");
@@ -77,5 +79,20 @@ public class CSTest extends WebTestBase {
         String taxonomy = prPage.taxonomyNode.getText();
         assertThat(taxonomy == "Uncategorized");
         homePage.logout();
+    }
+
+    @ExcelDataProvider(fileName = "LoginValuesMap.xlsx",tab = "testCase1")
+    @Test(groups = {"smoke", "regression, CS"}, dataProvider = "getDataFromExcelTabAsMap", dataProviderClass = TestDataProvider.class)
+    public void verifyBrandedPartUpdate(String[] role, String[] name, String[] password,String[] col3) throws Exception {
+
+        dataProviderTestParameters.set(role[0] + ","+name[0] + "," + password[0] + "," + col3[0]);
+        step("Launch Browser and logged into SPIDR Application");
+        InternetHomePage homePage = new InternetLoginPage(getDriver())
+                .open()
+                .login(name[0], password[0]);
+        step(
+                "Check if user is logged in",
+                () -> assertThat(homePage.isLoaded(col3[0])).isTrue()
+        );
     }
 }
