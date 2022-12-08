@@ -12,10 +12,12 @@ import org.testng.ITestResult;
 import org.testng.annotations.*;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
 
 public class TestBase {
     protected static final TestLog logger = new TestLog();
     protected ThreadLocal<String> dataProviderTestParameters = new ThreadLocal<>();
+
     protected ThreadLocal<String> startTimestamp = new ThreadLocal<>();
     protected Utils utils = new Utils();
     protected final ExecutionParameters executionParameters = new ExecutionParametersLoader().getExecutionParameters();
