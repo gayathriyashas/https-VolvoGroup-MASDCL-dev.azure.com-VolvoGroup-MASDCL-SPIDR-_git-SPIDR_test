@@ -115,16 +115,16 @@ public class ProductPage extends PageObject {
     public WebElement taxonomyNode;
 
     @FindBy(xpath = "//span[contains(text(), 'VMRS Code')]/../../../p/span")
-    WebElement VMRSCode;
+    public WebElement VMRSCode;
 
     @FindBy(xpath = "//span[contains(text(), 'VMRS CK31')]/../../../p/span")
-    WebElement VMRSCK31;
+    public WebElement VMRSCK31;
 
     @FindBy(xpath = "//span[contains(text(), 'VMRS CK32')]/../../../p/span")
-    WebElement VMRSCK32;
+    public WebElement VMRSCK32;
 
     @FindBy(xpath = "//span[contains(text(), 'VMRS CK33')]/../../../p/span")
-    WebElement VMRSCK33;
+    public WebElement VMRSCK33;
 
     //Review Attributes List
     @FindBy(xpath = "//div[contains(text(), 'Branded Part')]")

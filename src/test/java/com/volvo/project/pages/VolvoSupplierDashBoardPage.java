@@ -392,7 +392,7 @@ public class VolvoSupplierDashBoardPage extends PageObject {
             System.out.println("clickRefreshElement:"+clickRefreshElement);
             String value = null;
             boolean isLoaded = false;
-            int i = 15;
+            int i = 5;
             while(isLoaded == false || i > 0) {
                 i--;
                 Thread.sleep(10000);
@@ -411,7 +411,7 @@ public class VolvoSupplierDashBoardPage extends PageObject {
                 try{
                     totalProcessedRecordsElement = driver.findElement(By.xpath("//div[@class='ag-center-cols-container']//span[contains(text(),'all records passed validation')][1]/../../../div[7]"));
                     this.moveToElement(totalProcessedRecordsElement);
-                System.out.println("Move tp processed records");
+                System.out.println("Move to processed records");
                 System.out.println("downloadUploadHeader again Done:"+downloadUploadHeader);
                 value = totalProcessedRecordsElement.getText();
                 System.out.println("totalProcessedRecordsElement: "+totalProcessedRecordsElement);

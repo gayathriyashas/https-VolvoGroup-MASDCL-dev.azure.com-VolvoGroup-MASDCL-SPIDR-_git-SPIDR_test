@@ -43,6 +43,10 @@ public class InternetHomePage extends PageObject {
     @FindBy(xpath = "//span[contains(text(), 'Volvo Products Staging')]")
     public WebElement productsStagingTab;
 
+    @FindBy(xpath = "//span[contains(text(), 'Volvo Products Staging')][2]")
+    public WebElement volvoProductsStagingTabNew;
+
+
     public InternetHomePage(WebDriver driver) {
         super(driver);
     }
@@ -155,4 +159,5 @@ public class InternetHomePage extends PageObject {
         System.out.println("Record found and clicked: "+searchRecord);
         //return new InternetHomePage(driver);
     }
+
 }

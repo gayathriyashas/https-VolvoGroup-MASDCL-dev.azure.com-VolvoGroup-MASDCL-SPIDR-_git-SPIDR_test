@@ -65,7 +65,7 @@ public class TestSuiteExampleSPIDR extends WebTestBase {
         //Excel File Existing row update operation
         ExcelLibrary objExcelFile = new ExcelLibrary();
         objExcelFile.writeToExcel(filePath,2,4,"RRJ38869");
-
+        objExcelFile.writeToExcel(filePath,2,11,"123-456-789");
         supplierPage.clickChooseFileImportProductData();
         //supplierPage.refreshDownloadUploadProgress();
         supplierPage.getTotalProcessedRecordsUnderDownloadUploadProgress();
@@ -82,8 +82,8 @@ public class TestSuiteExampleSPIDR extends WebTestBase {
         homePage.volvo_Products_Staging_SubMenu();
         homePage.searchRecord("RRJ38869");
         homePage.verifyRecord("RRJ38869");
-        homePage.profileMenuApp();
-        homePage.logout();
+       homePage.profileMenuApp();
+       homePage.logout();
 
         /*
         //Excel File New row operation
@@ -103,6 +103,7 @@ public class TestSuiteExampleSPIDR extends WebTestBase {
         //homePage.profileMenuApp();
         //homePage.logout();
     }
+
 
 
 }
