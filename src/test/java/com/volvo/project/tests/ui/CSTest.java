@@ -81,18 +81,17 @@ public class CSTest extends WebTestBase {
         homePage.logout();
     }
 
-    @ExcelDataProvider(fileName = "LoginValuesMap.xlsx",tab = "testCase1")
-    @Test(groups = {"smoke", "regression, CS"}, dataProvider = "getDataFromExcelTabAsMap", dataProviderClass = TestDataProvider.class)
-    public void verifyBrandedPartUpdate(String[] role, String[] name, String[] password,String[] col3) throws Exception {
-
-        dataProviderTestParameters.set(role[0] + ","+name[0] + "," + password[0] + "," + col3[0]);
+    @ExcelDataProvider(fileName = "CSLoginValues.xlsx",tab = "testCase1")
+    @Test(groups = {"smoke", "regression, CS"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
+    public void verifyBrandedPartUpdate(String name, String password,String col3) throws Exception {
+        dataProviderTestParameters.set(name + "," + password+", + col3 + ");
         step("Launch Browser and logged into SPIDR Application");
         InternetHomePage homePage = new InternetLoginPage(getDriver())
                 .open()
-                .login(name[0], password[0]);
+                .login(name, password);
         step(
                 "Check if user is logged in",
-                () -> assertThat(homePage.isLoaded(col3[0])).isTrue()
+                () -> assertThat(homePage.isLoaded(col3)).isTrue()
         );
     }
 }

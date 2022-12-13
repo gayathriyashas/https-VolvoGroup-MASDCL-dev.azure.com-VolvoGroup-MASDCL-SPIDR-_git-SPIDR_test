@@ -104,5 +104,38 @@ public class TestSuiteExampleSPIDR extends WebTestBase {
         //homePage.logout();
     }
 
-
+    @ExcelDataProvider(fileName = "SupplierLoginValues.xlsx",tab = "testCase1")
+    @Test(groups = {"smoke", "regression"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
+    public void editpartBrandedPart(String name, String password,String col3) throws Exception {
+        dataProviderTestParameters.set(name + "," + password + ", + col3 + ");
+        step("Launch Browser and logged into SPIDR Application");
+        InternetHomePage homePage = new InternetLoginPage(getDriver())
+                .open()
+                .login(name, password);
+        step(
+                "Check if user is logged in",
+                () -> assertThat(homePage.isLoaded(col3)).isTrue()
+        );
+        step("Cost file export - On Supplier dashboard, from 'Export All' widget, select 'Product' Export type and click on Submit button");
+        VolvoSupplierDashBoardPage supplierPage = new VolvoSupplierDashBoardPage(getDriver());
+        supplierPage.verifySupplierDashboard();
+        supplierPage.exportProductData_RadioButton();
+        supplierPage.downloadUploadProgressOperation();
+        //VerifyZipFolderAndExtractFiles objZip = new VerifyZipFolderAndExtractFiles();
+        String filePath = VerifyZipFolderAndExtractFiles.unZipFolder();
+        //Excel File Existing row update operation
+        ExcelLibrary objExcelFile = new ExcelLibrary();
+        String partName = objExcelFile.readFromExcel(filePath, 2, 4);
+        String brandedPartInitial = objExcelFile.readFromExcel(filePath,2,15);
+        if(brandedPartInitial == "Y")
+            objExcelFile.writeToExcel(filePath, 2, 15, "N");
+        else
+            objExcelFile.writeToExcel(filePath, 2, 15, "Y");
+        supplierPage.clickChooseFileImportProductData();
+        //supplierPage.refreshDownloadUploadProgress();
+        supplierPage.getTotalProcessedRecordsUnderDownloadUploadProgress();
+        //supplierPage.getValidRowsRecordsUnderDownloadUploadProgress();
+        homePage.profileMenuApp();
+        homePage.logout();
+    }
 }
