@@ -392,7 +392,7 @@ public class VolvoSupplierDashBoardPage extends PageObject {
             System.out.println("clickRefreshElement:"+clickRefreshElement);
             String value = null;
             boolean isLoaded = false;
-            int i = 15;
+            int i = 5;
             while(isLoaded == false || i > 0) {
                 i--;
                 Thread.sleep(10000);
@@ -411,7 +411,7 @@ public class VolvoSupplierDashBoardPage extends PageObject {
                 try{
                     totalProcessedRecordsElement = driver.findElement(By.xpath("//div[@class='ag-center-cols-container']//span[contains(text(),'all records passed validation')][1]/../../../div[7]"));
                     this.moveToElement(totalProcessedRecordsElement);
-                System.out.println("Move tp processed records");
+                System.out.println("Move to processed records");
                 System.out.println("downloadUploadHeader again Done:"+downloadUploadHeader);
                 value = totalProcessedRecordsElement.getText();
                 System.out.println("totalProcessedRecordsElement: "+totalProcessedRecordsElement);
@@ -456,5 +456,68 @@ public class VolvoSupplierDashBoardPage extends PageObject {
             System.out.println("Some Exception happened");
         }
         return count.toString();
+    }
+
+    public void exportCostData_RadioButton()throws InterruptedException{
+        Thread.sleep(10000);
+        Thread.sleep(10000);
+        logger.info("ExportDataHeader done");
+        String parentWindowHandle = driver.getWindowHandle();
+        System.out.println("Parent window's handle -> " + parentWindowHandle);
+        driver.switchTo().newWindow(WindowType.TAB);
+        if (InternetLoginPage.URL_INTERNET_LOGIN_PAGE.contains("wwglbn12562"))
+        {
+            driver.navigate().to("https://wwglbn12562.vcn.ds.volvo.net/www/client-custom/Export.html");
+        }
+        else
+        {
+            driver.navigate().to("http://wwglbn12567:81/www/client-custom/Export.html");
+        }
+
+        Thread.sleep(10000);
+        Thread.sleep(10000);
+        WebElement clickElement = driver.findElement(By.xpath("//table[@class='fileUpload']//input[@id='DownloadRadioCost']"));
+        // Multiple click to open multiple window
+        for (var i = 0; i < 1; i++)
+        {
+            clickElement.click();
+            System.out.println("Radio button clicked");
+            ClickElementJSByXPATH("button[type='button']", "Submit Button click");
+            System.out.println("Submit button clicked");
+            Thread.sleep(10000);
+        }
+        // Store all the opened window into the list
+        // Print each and every Items of the list
+        Set<String> lstWindow =driver.getWindowHandles();
+        System.out.println("List of Windows : "+lstWindow);
+        try
+        {
+            for (String handle : lstWindow)
+            {
+                Thread.sleep(5000);
+                System.out.println(handle);
+                // Driver.Value.SwitchTo().Window(handle);
+
+                //IAlert alert = Driver.Value.SwitchTo().Alert();
+                //alert.Accept();
+                //alert.Dismiss();
+                var msg = driver.switchTo().alert().getText();
+                logger.info("Alert message: " + msg);
+                //accept alert
+                driver.switchTo().alert().accept();
+
+                System.out.println("Alert clicked OK");
+                //driver.switchTo().window((driver.getWindowHandles().Last()));
+                //driver.switchTo().window(parentWindowHandle);
+                driver.close();
+                //Driver.Value.SwitchTo().DefaultContent();
+                //Driver.Value.SwitchTo().Window(parentWindowHandle);
+            }
+        }
+        catch (Exception e)
+        {
+            System.out.println("Some Exception happened ");
+            //Console.WriteLine(exp.Message);
+        }
     }
 }

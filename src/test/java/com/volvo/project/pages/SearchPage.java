@@ -24,6 +24,12 @@ public class SearchPage extends PageObject {
     @FindBy(xpath = "//a[contains(text(), ' Delete')]")
     public WebElement deleteButton;
 
+    @FindBy(xpath = "//div[@class ='modal-content container-fluid']//button[contains(text(),' Yes ')]")
+    public WebElement deleteYes;
+
+    @FindBy(xpath = "//div[@class='nav-link active']//span[contains(text(),'Volvo Products Staging')]")
+    public WebElement volvoProductsStagingTabNew;
+
     @FindBy(xpath = "//span[@class='ag-selection-checkbox']/..")
     public WebElement numberOfRecords;
 
@@ -67,7 +73,7 @@ public class SearchPage extends PageObject {
         try {
             InternetHomePage IHPage = new InternetHomePage(driver);
             IHPage.searchRecord(record);
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(120));
             wait.until(ExpectedConditions.visibilityOf(numberOfRecords));
             number = numberOfRecords.getText();
             if(number == "1")  {
