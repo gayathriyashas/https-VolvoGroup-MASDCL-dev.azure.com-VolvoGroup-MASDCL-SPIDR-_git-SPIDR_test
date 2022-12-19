@@ -44,7 +44,7 @@ public class TestSuiteExampleSPIDR extends WebTestBase {
     }
 
     @ExcelDataProvider(fileName = "SupplierLoginValues.xlsx",tab = "testCase1")
-    @Test(groups = {"smoke", "regression"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
+    @Test(priority =1,groups = {"smoke", "regression"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
     public void verifySupplierIsAbleToImportProductFileIntoSPIDRApplication_ValidFiles(String name, String password,String col3) throws Exception {
         dataProviderTestParameters.set(name + "," + password+", + col3 + ");
         step("Launch Browser and logged into SPIDR Application");
@@ -122,19 +122,27 @@ public class TestSuiteExampleSPIDR extends WebTestBase {
         supplierPage.exportProductData_RadioButton();
         supplierPage.downloadUploadProgressOperation();
         //VerifyZipFolderAndExtractFiles objZip = new VerifyZipFolderAndExtractFiles();
-        String filePath = VerifyZipFolderAndExtractFiles.unZipFolder();
+        String filePath=VerifyZipFolderAndExtractFiles.unZipFolder();
         //Excel File Existing row update operation
         ExcelLibrary objExcelFile = new ExcelLibrary();
         String partName = objExcelFile.readFromExcel(filePath, 2, 4);
+        System.out.println("Column: "+objExcelFile.readFromExcel(filePath,0,15));
+        System.out.println("Part Name: "+partName);
         String brandedPartInitial = objExcelFile.readFromExcel(filePath,2,15);
-        if(brandedPartInitial == "Y")
+        objExcelFile.writeToExcel(filePath,2,4, "testName");
+        if(brandedPartInitial == "Y") {
             objExcelFile.writeToExcel(filePath, 2, 15, "N");
-        else
+            System.out.println("N");
+        }
+        else {
             objExcelFile.writeToExcel(filePath, 2, 15, "Y");
+            System.out.println("N");}
         supplierPage.clickChooseFileImportProductData();
         //supplierPage.refreshDownloadUploadProgress();
         supplierPage.getTotalProcessedRecordsUnderDownloadUploadProgress();
         //supplierPage.getValidRowsRecordsUnderDownloadUploadProgress();
+        String multiMethodfilePath = "C:/testOpsJavaFramework/src/test/resources/testdata/MultipleMethodTestData.xlsx";
+        objExcelFile.writeToExcel(multiMethodfilePath, 0,0,partName);
         homePage.profileMenuApp();
         homePage.logout();
     }

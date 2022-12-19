@@ -2,11 +2,13 @@ package com.volvo.project.tests.ui;
 
 import com.volvo.project.base.WebTestBase;
 import com.volvo.project.components.datatdriventesting.ExcelDataProvider;
+import com.volvo.project.components.datatdriventesting.ExcelLibrary;
 import com.volvo.project.components.datatdriventesting.TestDataProvider;
 import com.volvo.project.pages.*;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Stories;
 import io.qameta.allure.Story;
+import org.junit.Assert;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.interactions.Actions;
@@ -16,6 +18,7 @@ import java.util.Arrays;
 
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIOException;
 
 @Epic("epic 1234")
 @Stories({@Story("user story 12345")})
@@ -58,7 +61,7 @@ public class CSTest extends WebTestBase {
         csDash.openAssignTaxonomy();
         System.out.println("Assign Taxonomy shortcut opened");
         SearchPage sp = new SearchPage(getDriver());
-        sp.searchForRecord("TaxonomyTest");
+        sp.searchForRecord("SC20");
         homePage.productsStagingTab.click();
         System.out.println("Part Searched");
         Thread.sleep(10000);
@@ -73,18 +76,19 @@ public class CSTest extends WebTestBase {
         System.out.println("Scroll to Part Status dropdown");
         prPage.partStatusDropdown.click();
         System.out.println("Open Part Status Dropdown");
-        String status = prPage.partStatus.getText();
-        assertThat(status == "New");
+        String status = prPage.partStatus.getText().trim();
+        Assert.assertTrue(status.equals("New"));
         prPage.scrollElementIntoView(prPage.taxonomyNode);
-        String taxonomy = prPage.taxonomyNode.getText();
-        assertThat(taxonomy == "Uncategorized");
+        String taxonomy = prPage.taxonomyNode.getText().trim();
+        Assert.assertTrue(taxonomy.equals("Uncategorized"));
         homePage.logout();
     }
 
     @ExcelDataProvider(fileName = "CSLoginValues.xlsx",tab = "testCase1")
-    @Test(groups = {"smoke", "regression, CS"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
+    @Test(priority=2,groups = {"smoke", "regression, CS"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
     public void verifyBrandedPartUpdate(String name, String password,String col3) throws Exception {
         dataProviderTestParameters.set(name + "," + password+", + col3 + ");
+        String partNumber = "";
         step("Launch Browser and logged into SPIDR Application");
         InternetHomePage homePage = new InternetLoginPage(getDriver())
                 .open()
@@ -93,5 +97,14 @@ public class CSTest extends WebTestBase {
                 "Check if user is logged in",
                 () -> assertThat(homePage.isLoaded(col3)).isTrue()
         );
+        VolvoCSDashBoardPage csDash = new VolvoCSDashBoardPage(getDriver());
+        csDash.openReviewUpdatedParts();
+        ExcelLibrary objExcelFile = new ExcelLibrary();
+        String multiMethodfilePath = "src/test/resources/testdata/MultipleMethodTestData.xlsx";
+        partNumber = objExcelFile.readFromExcel(multiMethodfilePath, 0,0);
+        SearchPage sp = new SearchPage(getDriver());
+        sp.searchForRecord(partNumber);
+        Thread.sleep(10000);
+        Assert.assertTrue(Integer.parseInt(sp.numberOfRecords.getText()) > 0);
     }
 }

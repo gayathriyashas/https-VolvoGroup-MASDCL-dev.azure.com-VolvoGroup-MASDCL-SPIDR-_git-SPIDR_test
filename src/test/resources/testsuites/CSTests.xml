@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="SmokeTests">
+    <listeners>
+        <listener class-name="com.volvo.project.components.listeners.TestngContentListener"/>
+    </listeners>
+    <test name="BrandedPartUpdate">
+        <classes>
+            <class name="com.volvo.project.tests.ui.TestSuiteExampleSPIDR">
+                <methods>
+                    <include name="editpartBrandedPart"></include>
+                </methods>
+            </class>
+            <class name="com.volvo.project.tests.ui.CSTest">
+                <methods>
+                    <include name="verifyBrandedPartUpdate"></include>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+</suite>

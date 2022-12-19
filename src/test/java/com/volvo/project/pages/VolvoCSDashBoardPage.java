@@ -50,4 +50,11 @@ public class VolvoCSDashBoardPage extends PageObject {
         wait.until(ExpectedConditions.elementToBeClickable(assignTaxonomyNodeShortcut));
         assignTaxonomyNodeShortcut.click();
     }
+
+    @Step("Open Review Updated Parts Page")
+    public void openReviewUpdatedParts() throws InterruptedException {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
+        wait.until(ExpectedConditions.elementToBeClickable(reviewUpdatedPartsInfoShortcut));
+        reviewUpdatedPartsInfoShortcut.click();
+    }
 }

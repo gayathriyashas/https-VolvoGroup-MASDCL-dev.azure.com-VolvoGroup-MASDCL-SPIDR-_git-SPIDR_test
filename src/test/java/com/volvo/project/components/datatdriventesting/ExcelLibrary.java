@@ -9,6 +9,24 @@ import java.util.Iterator;
 
 public class ExcelLibrary {
 
+    public String readFromExcel(String fiePath, int rowNum,
+                             int cellNum) {
+        String result = "";
+        try {
+            FileInputStream fis = new FileInputStream(fiePath);
+            Workbook wb = WorkbookFactory.create(fis);
+            Sheet s = wb.getSheetAt(0);
+            Row r = s.getRow(rowNum);
+            Cell c = r.getCell(cellNum);
+            result = c.getStringCellValue().toString();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     public String readFromExcel(final int rowNum, final int colNum, String excelName) {
         Workbook wb = null;
         Object value = null;
