@@ -129,14 +129,16 @@ public class TestSuiteExampleSPIDR extends WebTestBase {
         System.out.println("Column: "+objExcelFile.readFromExcel(filePath,0,15));
         System.out.println("Part Name: "+partName);
         String brandedPartInitial = objExcelFile.readFromExcel(filePath,2,15);
+        String brandedPartFinal;
         objExcelFile.writeToExcel(filePath,2,4, "testName");
-        if(brandedPartInitial == "Y") {
+        if(brandedPartInitial.equals("Y")) {
             objExcelFile.writeToExcel(filePath, 2, 15, "N");
             System.out.println("N");
         }
         else {
             objExcelFile.writeToExcel(filePath, 2, 15, "Y");
-            System.out.println("N");}
+            System.out.println("Y");}
+        brandedPartFinal =objExcelFile.readFromExcel(filePath,2,15);
         supplierPage.clickChooseFileImportProductData();
         //supplierPage.refreshDownloadUploadProgress();
         supplierPage.getTotalProcessedRecordsUnderDownloadUploadProgress();
