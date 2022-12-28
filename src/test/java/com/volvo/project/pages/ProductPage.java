@@ -33,11 +33,12 @@ public class ProductPage extends PageObject {
     WebElement adminTab;
 
     //buttons
-    @FindBy(xpath = "//a[contains(text(), ' Save')]")
-    WebElement saveButton;
+   // @FindBy(xpath = "//a[contains(text(), ' Save')]")
+    @FindBy(xpath = "//a[normalize-space()='Save']")
+    public WebElement saveButton;
 
     @FindBy(xpath = "//button[contains(text(), 'Basic Info')]")
-    WebElement basicInfoDropdown;
+    public WebElement basicInfoDropdown;
 
     @FindBy(xpath = "//button[contains(text(), 'Part Status')]")
     public WebElement partStatusDropdown;
@@ -56,7 +57,10 @@ public class ProductPage extends PageObject {
     public WebElement supplierPartDescription;
 
     @FindBy(xpath = "//span[contains(text(), 'Internal Part Name')]/../../../p/span")
-    WebElement internalPartName;
+    public WebElement internalPartNameAtt;
+
+    @FindBy(xpath = "//span[contains(text(), 'Internal Part Name')]/../../../..//descendant::textarea")
+    public WebElement internalPartNameTextArea;
 
     @FindBy(xpath = "//span[contains(text(), 'Brand')]/../../../p/span")
     public WebElement brand;

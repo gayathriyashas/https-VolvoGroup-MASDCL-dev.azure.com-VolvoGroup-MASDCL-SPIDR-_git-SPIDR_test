@@ -4,6 +4,7 @@ import com.volvo.project.base.WebTestBase;
 import com.volvo.project.components.datatdriventesting.ExcelDataProvider;
 import com.volvo.project.components.datatdriventesting.ExcelLibrary;
 import com.volvo.project.components.datatdriventesting.TestDataProvider;
+import com.volvo.project.components.fileoperations.VerifyZipFolderAndExtractFiles;
 import com.volvo.project.pages.*;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Stories;
@@ -107,4 +108,70 @@ public class CSTest extends WebTestBase {
         Thread.sleep(10000);
         Assert.assertTrue(Integer.parseInt(sp.numberOfRecords.getText()) > 0);
     }
-}
+
+
+    @ExcelDataProvider(fileName = "EastPennSupplierLoginValues.xlsx",tab = "testCase1")
+    @Test(priority =1,groups = {"smoke", "regression"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
+    public void verifyCSUpdateInternalPartName(String name, String password,String col3) throws Exception
+    {
+        SearchPage sp = new SearchPage(getDriver());
+        ProductPage prPage = new ProductPage(getDriver());
+        JavascriptExecutor js = (JavascriptExecutor)getDriver();
+        /*dataProviderTestParameters.set(name + "," + password + ", + col3 + ");
+        step("Launch Browser and logged into SPIDR Application");
+        InternetHomePage homePage = new InternetLoginPage(getDriver())
+                .open()
+                .login(name, password);
+        step(
+                "Check if user is logged in",
+                () -> assertThat(homePage.isLoaded(col3)).isTrue()
+        );
+        step("Cost file export - On Supplier dashboard, from 'Export All' widget, select 'Product' Export type and click on Submit button");
+        VolvoSupplierDashBoardPage supplierPage = new VolvoSupplierDashBoardPage(getDriver());
+        supplierPage.verifySupplierDashboard();
+        supplierPage.exportProductData_RadioButton();
+        supplierPage.downloadUploadProgressOperation();
+        //VerifyZipFolderAndExtractFiles objZip = new VerifyZipFolderAndExtractFiles();
+        String filePath = VerifyZipFolderAndExtractFiles.unZipFolder();
+        //Excel File Existing row update operation
+        ExcelLibrary objExcelFile = new ExcelLibrary();
+        objExcelFile.writeToExcel(filePath, 3, 4, "AutoTest123");
+        objExcelFile.writeToExcel(filePath, 3, 5, "CS Update Internal Part name");
+        supplierPage.clickChooseFileImportProductData();
+        //supplierPage.refreshDownloadUploadProgress();
+        supplierPage.getTotalProcessedRecordsUnderDownloadUploadProgress();
+        //supplierPage.getValidRowsRecordsUnderDownloadUploadProgress();
+        homePage.profileMenuApp();
+        homePage.logout();
+*/
+        step("Launch Browser and logged into SPIDR Application");
+        InternetHomePage homePage1 = new InternetLoginPage(getDriver())
+                .open()
+                .login("gyashas_CS", "test");
+        homePage1.hamburgeIcon();
+        homePage1.stagingMenu();
+        homePage1.volvo_Products_Staging_SubMenu();
+        homePage1.searchRecord("AutoTest123");
+        Thread.sleep(10000);
+
+        homePage1.productsStagingTab.click();
+        Thread.sleep(10000);
+        System.out.println("Part is Searched");
+        Thread.sleep(10000);
+        sp.clickUsingJS(sp.searchedItemCheckbox);
+        System.out.println("Check box clicked");
+        Thread.sleep(10000);
+        sp.editButton.click();
+        System.out.println("Part is opened");
+        Thread.sleep(20000);
+        prPage.scrollElementIntoView(prPage.internalPartNameAtt);
+        System.out.println("Scrolled to elemet");
+        Thread.sleep(10000);
+        prPage.internalPartNameTextArea.click();
+        prPage.internalPartNameTextArea.sendKeys("Auto CS update internal Part name");
+        Thread.sleep(10000);
+        //System.out.println("CS is able to update the Internal Part Name successfully");
+        Thread.sleep(10000);
+        prPage.saveButton.click();
+        }
+    }
