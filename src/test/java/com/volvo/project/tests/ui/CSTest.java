@@ -11,6 +11,7 @@ import io.qameta.allure.Stories;
 import io.qameta.allure.Story;
 import org.junit.Assert;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.annotations.Test;
@@ -167,7 +168,9 @@ public class CSTest extends WebTestBase {
         prPage.scrollElementIntoView(prPage.internalPartNameAtt);
         System.out.println("Scrolled to elemet");
         Thread.sleep(10000);
-        prPage.internalPartNameTextArea.click();
+        prPage.internalPartNameAtt.click();
+        prPage.internalPartNameTextArea.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+        prPage.internalPartNameTextArea.sendKeys(Keys.DELETE);
         prPage.internalPartNameTextArea.sendKeys("Auto CS update internal Part name");
         Thread.sleep(10000);
         //System.out.println("CS is able to update the Internal Part Name successfully");
