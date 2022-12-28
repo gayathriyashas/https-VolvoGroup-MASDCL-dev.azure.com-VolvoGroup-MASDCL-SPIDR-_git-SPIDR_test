@@ -30,7 +30,7 @@ public class SearchPage extends PageObject {
     @FindBy(xpath = "//div[@class='nav-link active']//span[contains(text(),'Volvo Products Staging')]")
     public WebElement volvoProductsStagingTabNew;
 
-    @FindBy(xpath = "//span[@class='ag-selection-checkbox']/..")
+    @FindBy(xpath = "//div[@class='ng-star-inserted']/span[@class='ag-paging-row-summary-panel']/span[3]")
     public WebElement numberOfRecords;
 
     public SearchPage(WebDriver driver) {

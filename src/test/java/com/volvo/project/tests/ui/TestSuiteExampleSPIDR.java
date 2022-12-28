@@ -126,25 +126,23 @@ public class TestSuiteExampleSPIDR extends WebTestBase {
         //Excel File Existing row update operation
         ExcelLibrary objExcelFile = new ExcelLibrary();
         String partName = objExcelFile.readFromExcel(filePath, 2, 4);
-        System.out.println("Column: "+objExcelFile.readFromExcel(filePath,0,15));
-        System.out.println("Part Name: "+partName);
+        System.out.println("Part name: "+partName);
         String brandedPartInitial = objExcelFile.readFromExcel(filePath,2,15);
         String brandedPartFinal;
-        objExcelFile.writeToExcel(filePath,2,4, "testName");
-        if(brandedPartInitial.equals("Y")) {
+        //objExcelFile.writeToExcel(filePath,2,4, "testName");
+        if(brandedPartInitial.equals("Y"))
             objExcelFile.writeToExcel(filePath, 2, 15, "N");
-            System.out.println("N");
-        }
-        else {
+
+        else
             objExcelFile.writeToExcel(filePath, 2, 15, "Y");
-            System.out.println("Y");}
         brandedPartFinal =objExcelFile.readFromExcel(filePath,2,15);
+        String multiMethodfilePath = "C:/testOpsJavaFramework/src/test/resources/testdata/MultipleMethodTestData.xlsx";
+        objExcelFile.writeToExcel(multiMethodfilePath, 0,0,partName);
         supplierPage.clickChooseFileImportProductData();
         //supplierPage.refreshDownloadUploadProgress();
         supplierPage.getTotalProcessedRecordsUnderDownloadUploadProgress();
         //supplierPage.getValidRowsRecordsUnderDownloadUploadProgress();
-        String multiMethodfilePath = "C:/testOpsJavaFramework/src/test/resources/testdata/MultipleMethodTestData.xlsx";
-        objExcelFile.writeToExcel(multiMethodfilePath, 0,0,partName);
+
         homePage.profileMenuApp();
         homePage.logout();
     }
