@@ -87,6 +87,41 @@ public class CSTest extends WebTestBase {
     }
 
     @ExcelDataProvider(fileName = "CSLoginValues.xlsx",tab = "testCase1")
+    @Test(groups = {"smoke", "regression, CS"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
+    public void setTaxonomy(String name, String password,String col3) throws Exception {
+        dataProviderTestParameters.set(name + "," + password+", + col3 + ");
+        step("Launch Browser and logged into SPIDR Application");
+        InternetHomePage homePage = new InternetLoginPage(getDriver())
+                .open()
+                .login(name, password);
+        step(
+                "Check if user is logged in",
+                () -> assertThat(homePage.isLoaded(col3)).isTrue()
+        );
+        Actions action = new Actions(getDriver());
+        VolvoCSDashBoardPage csDash = new VolvoCSDashBoardPage(getDriver());
+        csDash.openAssignTaxonomy();
+        System.out.println("Assign Taxonomy shortcut opened");
+        SearchPage sp = new SearchPage(getDriver());
+        sp.searchForRecord("SC20");
+        homePage.productsStagingTab.click();
+        System.out.println("Part Searched");
+        Thread.sleep(10000);
+        sp.clickUsingJS(sp.searchedItemCheckbox);
+        System.out.println("Check box clicked");
+        sp.editButton.click();
+        System.out.println("Part opened");
+        Thread.sleep(20000);
+        ProductPage prPage = new ProductPage(getDriver());
+        prPage.changeViewToNoPreference();
+        prPage.openCategorization();
+        prPage.scrollElementIntoView(prPage.taxonomyNode);
+        prPage.setTaxonomyNode("Driveline.Components (21401)");
+        prPage.saveButton.click();
+        Thread.sleep(5000);
+    }
+
+    @ExcelDataProvider(fileName = "CSLoginValues.xlsx",tab = "testCase1")
     @Test(priority=2,groups = {"smoke", "regression, CS"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
     public void verifyBrandedPartUpdate(String name, String password,String col3) throws Exception {
         dataProviderTestParameters.set(name + "," + password+", + col3 + ");

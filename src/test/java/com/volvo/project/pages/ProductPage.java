@@ -3,6 +3,7 @@ package com.volvo.project.pages;
 import com.volvo.project.components.PageObject;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -42,6 +43,9 @@ public class ProductPage extends PageObject {
 
     @FindBy(xpath = "//button[contains(text(), 'Part Status')]")
     public WebElement partStatusDropdown;
+
+    @FindBy(xpath = "//button[contains(text(), 'Categorization')]")
+    public WebElement categorizationDropdown;
 
     @FindBy(xpath = "//button[contains(text(), 'Digital')]")
     public WebElement digitalDropdown;
@@ -118,6 +122,8 @@ public class ProductPage extends PageObject {
     @FindBy(xpath = "//span[contains(text(), 'Taxonomy Node')]/../../../p/span")
     public WebElement taxonomyNode;
 
+    @FindBy(xpath = "//span[contains(text(), 'Taxonomy Node')]/../../../..//descendant::input")
+    public WebElement taxonomyNodeTextBox;
     @FindBy(xpath = "//span[contains(text(), 'VMRS Code')]/../../../p/span")
     public WebElement VMRSCode;
 
@@ -158,5 +164,22 @@ public class ProductPage extends PageObject {
             basicInfoDropdown.click();
             Thread.sleep(1000);
         }
+    }
+
+    @Step("Open Categorization")
+    public void openCategorization() throws InterruptedException {
+        if(driver.findElements(By.xpath("//span[contains(text(), 'Taxonomy Node')]/../../../p/span")).size() == 0) {
+            categorizationDropdown.click();
+            Thread.sleep(1000);
+        }
+    }
+
+    @Step("Set Taxonomy Node")
+    public void setTaxonomyNode(String taxonomy) throws InterruptedException {
+        scrollElementIntoView(taxonomyNode);
+        taxonomyNode.click();
+        taxonomyNodeTextBox.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+        taxonomyNodeTextBox.sendKeys(Keys.DELETE);
+        taxonomyNodeTextBox.sendKeys(taxonomy);
     }
 }
