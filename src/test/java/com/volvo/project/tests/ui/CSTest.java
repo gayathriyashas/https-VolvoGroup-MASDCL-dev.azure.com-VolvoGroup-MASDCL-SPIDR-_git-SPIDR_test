@@ -201,15 +201,18 @@ public class CSTest extends WebTestBase {
         System.out.println("Part is opened");
         Thread.sleep(20000);
         prPage.scrollElementIntoView(prPage.internalPartNameAtt);
-        System.out.println("Scrolled to elemet");
+        System.out.println("Scrolled to element");
         Thread.sleep(10000);
         prPage.internalPartNameAtt.click();
+        String actualText = prPage.internalPartNameTextArea.getText();
+        System.out.println(actualText);
         prPage.internalPartNameTextArea.sendKeys(Keys.chord(Keys.CONTROL, "a"));
         prPage.internalPartNameTextArea.sendKeys(Keys.DELETE);
         prPage.internalPartNameTextArea.sendKeys("Auto CS update internal Part name");
-        Thread.sleep(10000);
-        //System.out.println("CS is able to update the Internal Part Name successfully");
-        Thread.sleep(10000);
+        prPage.internalPartNameTextArea.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+        prPage.internalPartNameTextArea.sendKeys(Keys.DELETE);
+        prPage.internalPartNameTextArea.sendKeys(actualText);
+        Thread.sleep(20000);
         prPage.saveButton.click();
         }
     }
