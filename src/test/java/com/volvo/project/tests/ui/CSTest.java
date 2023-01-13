@@ -59,11 +59,12 @@ public class CSTest extends WebTestBase {
                 () -> assertThat(homePage.isLoaded(col3)).isTrue()
         );
         Actions action = new Actions(getDriver());
+        String partNumber = readFromMultiStepExcel();
         VolvoCSDashBoardPage csDash = new VolvoCSDashBoardPage(getDriver());
         csDash.openAssignTaxonomy();
         System.out.println("Assign Taxonomy shortcut opened");
         SearchPage sp = new SearchPage(getDriver());
-        sp.searchForRecord("SC20");
+        sp.searchForRecord(partNumber);
         homePage.productsStagingTab.click();
         System.out.println("Part Searched");
         Thread.sleep(10000);

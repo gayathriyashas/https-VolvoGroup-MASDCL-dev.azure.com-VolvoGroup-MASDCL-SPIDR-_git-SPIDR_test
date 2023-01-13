@@ -347,6 +347,73 @@ public class VolvoSupplierDashBoardPage extends PageObject {
         //Switch to the parent window
         driver.switchTo().window(parentWindowHandle);
     }
+
+    @Step("Select 'ChooseFile' in ImportProductData")
+    public void clickChooseFileImportCostData() throws InterruptedException {
+        Thread.sleep(10000);
+        logger.info("Export Data Header clicked");
+
+        // Store the parent window of the driver
+        String parentWindowHandle = driver.getWindowHandle();
+        System.out.println("Parent window's handle -> " + parentWindowHandle);
+        driver.switchTo().newWindow(WindowType.TAB);
+
+        if (InternetLoginPage.URL_INTERNET_LOGIN_PAGE.contains("wwglbn12562"))
+        {
+            driver.navigate().to("https://wwglbn12562.vcn.ds.volvo.net/www/client-custom/CostImport.html");
+        }
+        else
+        {    // path double check
+            driver.navigate().to("http://wwglbn12567:81/www/client-custom/CostImport.html");
+        }
+
+        Thread.sleep(10000);
+        Thread.sleep(10000);
+        WebElement clickElement = driver.findElement(By.xpath("//input[@type='file']"));
+
+        // Multiple click to open multiple window
+        for (var i = 0; i < 1; i++)
+        {
+            //clickElement.click();
+            UploadingFileToApplication();
+            System.out.println("Button clicked");
+            ClickElementJSByXPATH("button[type='button']", "Submit Button click");
+            System.out.println("Submit button clicked");
+            Thread.sleep(10000);
+        }
+        // Store all the opened window into the list
+        // Print each and every Items of the list
+        Set<String> lstWindow =driver.getWindowHandles();
+        System.out.println("List of Windows : "+lstWindow);
+        try
+        {
+            for (String handle : lstWindow)
+            {
+                Thread.sleep(5000);
+                System.out.println(handle);
+                // Driver.Value.SwitchTo().Window(handle);
+
+                //IAlert alert = Driver.Value.SwitchTo().Alert();
+                //alert.Accept();
+                //alert.Dismiss();
+                var msg = driver.switchTo().alert().getText();
+                logger.info("Alert message: " + msg);
+                //accept alert
+                driver.switchTo().alert().accept();
+
+                System.out.println("Alert clicked OK");
+                driver.close();
+            }
+        }
+        catch (Exception e)
+        {
+            System.out.println("Some Exception happened ");
+            //Console.WriteLine(exp.Message);
+        }
+
+        //Switch to the parent window
+        driver.switchTo().window(parentWindowHandle);
+    }
     @Step("UploadingFileToApplication")
     public void UploadingFileToApplication()
     {
@@ -459,12 +526,19 @@ public class VolvoSupplierDashBoardPage extends PageObject {
     }
 
     public void exportCostData_RadioButton()throws InterruptedException{
-        Thread.sleep(10000);
-        Thread.sleep(10000);
         logger.info("ExportDataHeader done");
+
+
+        //Actions action = new Actions(Driver.Value);
+        //action.MoveToElement(ExportDataHeader).Click().Perform();
+        logger.info("Export Data Header clicked");
+        Thread.sleep(10000);
+
+        // Store the parent window of the driver
         String parentWindowHandle = driver.getWindowHandle();
         System.out.println("Parent window's handle -> " + parentWindowHandle);
         driver.switchTo().newWindow(WindowType.TAB);
+
         if (InternetLoginPage.URL_INTERNET_LOGIN_PAGE.contains("wwglbn12562"))
         {
             driver.navigate().to("https://wwglbn12562.vcn.ds.volvo.net/www/client-custom/Export.html");
@@ -477,6 +551,7 @@ public class VolvoSupplierDashBoardPage extends PageObject {
         Thread.sleep(10000);
         Thread.sleep(10000);
         WebElement clickElement = driver.findElement(By.xpath("//table[@class='fileUpload']//input[@id='DownloadRadioCost']"));
+
         // Multiple click to open multiple window
         for (var i = 0; i < 1; i++)
         {
@@ -519,5 +594,8 @@ public class VolvoSupplierDashBoardPage extends PageObject {
             System.out.println("Some Exception happened ");
             //Console.WriteLine(exp.Message);
         }
+
+        //Switch to the parent window
+        driver.switchTo().window(parentWindowHandle);
     }
 }

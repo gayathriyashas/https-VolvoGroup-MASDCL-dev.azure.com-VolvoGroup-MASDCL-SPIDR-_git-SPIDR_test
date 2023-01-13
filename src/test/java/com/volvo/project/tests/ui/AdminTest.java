@@ -2,6 +2,7 @@ package com.volvo.project.tests.ui;
 
 import com.volvo.project.base.WebTestBase;
 import com.volvo.project.components.datatdriventesting.ExcelDataProvider;
+import com.volvo.project.components.datatdriventesting.ExcelLibrary;
 import com.volvo.project.components.datatdriventesting.TestDataProvider;
 import com.volvo.project.pages.*;
 import io.qameta.allure.Epic;
@@ -62,5 +63,59 @@ public class AdminTest extends WebTestBase {
         assertThat(metaTitle == supplierName+" Truck Parts, "+manuName+" Truck Parts, "+partDescription);
         assertThat(metaDescription == partLongDescBrand);
         assertThat(metaKeywords == brand + ", "+ supplierName + ", " + manuName + ", " + partDescription);
+    }
+
+    @ExcelDataProvider(fileName = "AdminLoginValues.xlsx",tab = "testCase1")
+    @Test(groups = {"smoke", "regression"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
+    public void deleteProduct(String name, String password,String col3) throws Exception {
+        String partNumber = "";
+        dataProviderTestParameters.set(name + "," + password + ", + col3 + ");
+        step("Launch Browser and logged into SPIDR Application");
+        InternetHomePage homePage = new InternetLoginPage(getDriver())
+                .open()
+                .login(name, password);
+        step(
+                "Check if user is logged in",
+                () -> assertThat(homePage.isLoaded(col3)).isTrue()
+        );
+        homePage.hamburgeIcon();
+        homePage.stagingMenu();
+        homePage.volvo_Products_Staging_SubMenu();
+        partNumber = readFromMultiStepExcel();
+        SearchPage sp = new SearchPage(getDriver());
+        sp.searchForRecord(partNumber);
+        Thread.sleep(10000);
+        sp.searchedItemCheckbox.click();
+        sp.deleteButton.click();
+        Thread.sleep(1000);
+        sp.deleteYes.click();
+        Thread.sleep(1000);
+    }
+
+    @ExcelDataProvider(fileName = "AdminLoginValues.xlsx",tab = "testCase1")
+    @Test(groups = {"smoke", "regression"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
+    public void deleteCost(String name, String password,String col3) throws Exception {
+        String partNumber = "";
+        dataProviderTestParameters.set(name + "," + password + ", + col3 + ");
+        step("Launch Browser and logged into SPIDR Application");
+        InternetHomePage homePage = new InternetLoginPage(getDriver())
+                .open()
+                .login(name, password);
+        step(
+                "Check if user is logged in",
+                () -> assertThat(homePage.isLoaded(col3)).isTrue()
+        );
+        homePage.hamburgeIcon();
+        homePage.stagingMenu();
+        homePage.volvo_Cost_Staging_SubMenu();
+        partNumber = readFromMultiStepExcel();
+        SearchPage sp = new SearchPage(getDriver());
+        sp.searchForRecord(partNumber);
+        Thread.sleep(10000);
+        sp.searchedItemCheckbox.click();
+        sp.deleteButton.click();
+        Thread.sleep(1000);
+        sp.deleteYes.click();
+        Thread.sleep(1000);
     }
 }

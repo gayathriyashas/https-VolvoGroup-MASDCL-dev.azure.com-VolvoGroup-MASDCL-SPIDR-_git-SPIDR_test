@@ -9,7 +9,7 @@
 
     <test verbose="2" name="all tests in the project">
         <packages>
-            <package name="com.volvo.project.tests.ui.TestSuiteExampleSPIDR"/>
+            <package name="com.volvo.project.tests.ui.SupplierTest"/>
         </packages>
     </test>
 </suite>
