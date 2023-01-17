@@ -214,7 +214,7 @@ public class VolvoSupplierDashBoardPage extends PageObject {
         Thread.sleep(10000);
 
         // Multiple click to open multiple window
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 10; i++)
         {
             Thread.sleep(5000);
             Thread.sleep(5000);

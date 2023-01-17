@@ -30,6 +30,10 @@ public class ProductPage extends PageObject {
     @FindBy(xpath = "//span[contains(text(), 'Category Specific Attributes')]")
     WebElement categorySpecificArrtibutesTab;
 
+    //sidebar
+    @FindBy(xpath = "//span[contains(text(), 'Part Data')]")
+    public WebElement partDataTab;
+
     @FindBy(xpath = "//span[contains(text(), 'Admin')]")
     WebElement adminTab;
 
@@ -76,7 +80,16 @@ public class ProductPage extends PageObject {
     public WebElement manufacturerName;
 
    @FindBy(xpath = "//span[contains(text(), 'CS Enrichment Complete')]/../../../p/span")
-    WebElement CSEnrichmentComplete;
+    public WebElement csEnrichmentComplete1;
+
+    @FindBy(xpath = "//span[contains(text(), 'CS Enrichment Complete')]/../../../..//descendant::textarea")
+    public WebElement csEnrichmentCompleteDD;
+
+    @FindBy(xpath = "//span[contains(text(), 'CS Enrichment Complete')]/../../../..//descendant::textarea")
+    public WebElement csEnrichmentCompleteYes;
+
+    @FindBy(xpath = "//span[contains(text(), 'CS Enrichment Complete')]")
+    public WebElement csEnrichmentComplete;
 
    @FindBy(xpath = "//span[contains(text(), 'Part long Description (Brand)')]/../../../p/span")
    public WebElement partLongDescBrand;
@@ -148,7 +161,7 @@ public class ProductPage extends PageObject {
 
     //Admin
     @FindBy(xpath = "//span[contains(text(), 'Manager Approval')]/../../../p/span")
-    WebElement managerApproval;
+    public WebElement managerApproval;
 
     @Step("Change view to No Preference")
     public void changeViewToNoPreference() throws InterruptedException {

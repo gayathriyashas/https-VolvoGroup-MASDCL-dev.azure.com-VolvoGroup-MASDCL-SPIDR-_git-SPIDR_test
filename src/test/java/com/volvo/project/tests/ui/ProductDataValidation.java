@@ -21,13 +21,13 @@ import org.openqa.selenium.Keys;
 public class ProductDataValidation extends WebTestBase
 {
 
-    @ExcelDataProvider(fileName = "EastPennSupplierLoginValues.xlsx",tab = "testCase1")
+    @ExcelDataProvider(fileName = "EastPennSupplierLoginValues.xlsx", tab = "testCase1")
     @Test(groups = {"smoke", "regression"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
-    public void verifyVMRSAttributes(String name, String password,String col3) throws Exception
+    public void verifyVMRSAttributes(String name, String password, String col3) throws Exception
     {
 
         SearchPage sp = new SearchPage(getDriver());
-        dataProviderTestParameters.set(name + "," + password+", + col3 + ");
+        dataProviderTestParameters.set(name + "," + password + ", + col3 + ");
         step("Launch Browser and logged into SPIDR Application");
         InternetHomePage homePage = new InternetLoginPage(getDriver())
                 .open()
@@ -43,11 +43,14 @@ public class ProductDataValidation extends WebTestBase
         supplierPage.exportProductData_RadioButton();
         supplierPage.downloadUploadProgressOperation();
         //VerifyZipFolderAndExtractFiles objZip = new VerifyZipFolderAndExtractFiles();
-        String filePath= VerifyZipFolderAndExtractFiles.unZipFolder();
+        String filePath = VerifyZipFolderAndExtractFiles.unZipFolder();
         //Excel File Existing row update operation
         ExcelLibrary objExcelFile = new ExcelLibrary();
-        objExcelFile.writeToExcel(filePath,2,4,"VMRS validation");
-        objExcelFile.writeToExcel(filePath,2,11,"123-456-789");
+        //objExcelFile.writeToExcel(filePath, 2, 1, "US");
+        objExcelFile.writeToExcel(filePath, 2, 4, "VMRS validation");
+        //objExcelFile.writeToExcel(filePath, 2, 5, "VMRS Electrical data");
+        objExcelFile.writeToExcel(filePath, 2, 11, "123-456-789");
+        //objExcelFile.writeToExcel(filePath, 2, 16, "N");
         supplierPage.clickChooseFileImportProductData();
         //supplierPage.refreshDownloadUploadProgress();
         supplierPage.getTotalProcessedRecordsUnderDownloadUploadProgress();
@@ -65,7 +68,7 @@ public class ProductDataValidation extends WebTestBase
         sp.searchForRecord("VMRS validation");
         Thread.sleep(10000);
 
-       homePage.productsStagingTab.click();
+        homePage.productsStagingTab.click();
         Thread.sleep(10000);
         System.out.println("Part is Searched");
         Thread.sleep(10000);
@@ -80,31 +83,101 @@ public class ProductDataValidation extends WebTestBase
         System.out.println("Scrolled to VMRS code attribute");
         Thread.sleep(20000);
 
-       // homePage.verifyRecord("VMRS validation");
-       // ProductPage productPage = new ProductPage(getDriver());
+        // homePage.verifyRecord("VMRS validation");
+        // ProductPage productPage = new ProductPage(getDriver());
         //verify VMRS code and CK1, CK2 and CK3  attributes
         step("Check if VMRS code is holding the expected value imported");
         String vmrsCodeActualValue = prPage.VMRSCode.getText();
         String vmrsCodeExpectedValue = "123-456-789";
-        Assert.assertEquals(vmrsCodeActualValue,vmrsCodeExpectedValue);
+        Assert.assertEquals(vmrsCodeActualValue, vmrsCodeExpectedValue);
         System.out.println("VMRS Code is validated");
 
         step("Check if VMRSCK31 code is holding the expected value imported");
         String vmrsCK31ActualValue = prPage.VMRSCK31.getText();
         String vmrsCK31ExpectedValue = "123";
-        Assert.assertEquals(vmrsCK31ActualValue,vmrsCK31ExpectedValue);
+        Assert.assertEquals(vmrsCK31ActualValue, vmrsCK31ExpectedValue);
         System.out.println("VMRS Ck31 is validated");
 
         step("Check if VMRS CK32 code is holding the expected value imported");
         String vmrsCK32ActualValue = prPage.VMRSCK32.getText();
         String vmrsCK32ExpectedValue = "456";
-        Assert.assertEquals(vmrsCK32ActualValue,vmrsCK32ExpectedValue);
+        Assert.assertEquals(vmrsCK32ActualValue, vmrsCK32ExpectedValue);
         System.out.println("VMRS CK32 is validated");
 
         step("Check if VMRSCK33 code is holding the expected value imported");
         String vmrsCK33ActualValue = prPage.VMRSCK33.getText();
         String vmrsCK33ExpectedValue = "789";
-        Assert.assertEquals(vmrsCK33ActualValue,vmrsCK33ExpectedValue);
+        Assert.assertEquals(vmrsCK33ActualValue, vmrsCK33ExpectedValue);
         System.out.println("VMRS CK33 is validated");
+    }
+
+
+    @ExcelDataProvider(fileName = "EastPennSupplierLoginValues.xlsx", tab = "testCase1")
+    @Test(groups = {"smoke", "regression"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
+    public void managerApprovalYes(String name, String password, String col3) throws Exception
+    {
+        SearchPage sp = new SearchPage(getDriver());
+        dataProviderTestParameters.set(name + "," + password + ", + col3 + ");
+        step("Launch Browser and logged into SPIDR Application");
+        InternetHomePage homePage = new InternetLoginPage(getDriver())
+                .open()
+                .login(name, password);
+        step(
+                "Check if user is logged in",
+                () -> assertThat(homePage.isLoaded(col3)).isTrue()
+        );
+        step("Cost file export - On Supplier dashboard, from 'Export All' widget, select 'Product' Export type and click on Submit button");
+        VolvoSupplierDashBoardPage supplierPage = new VolvoSupplierDashBoardPage(getDriver());
+
+        supplierPage.verifySupplierDashboard();
+        supplierPage.exportProductData_RadioButton();
+        supplierPage.downloadUploadProgressOperation();
+        //VerifyZipFolderAndExtractFiles objZip = new VerifyZipFolderAndExtractFiles();
+        String filePath = VerifyZipFolderAndExtractFiles.unZipFolder();
+        //Excel File Existing row update operation
+        ExcelLibrary objExcelFile = new ExcelLibrary();
+        //objExcelFile.writeToExcel(filePath, 2, 1, "US");
+        objExcelFile.writeToExcel(filePath, 3, 4, "Test manager approval yes");
+        //objExcelFile.writeToExcel(filePath, , 5, "VMRS Electrical data");
+        //objExcelFile.writeToExcel(filePath, 2, 11, "123-456-789");
+        //objExcelFile.writeToExcel(filePath, 2, 16, "N");
+        supplierPage.clickChooseFileImportProductData();
+        //supplierPage.refreshDownloadUploadProgress();
+        supplierPage.getTotalProcessedRecordsUnderDownloadUploadProgress();
+        //supplierPage.getValidRowsRecordsUnderDownloadUploadProgress();
+        homePage.profileMenuApp();
+        homePage.logout();
+
+        step("Launch Browser and logged into SPIDR Application");
+        InternetHomePage homePage1 = new InternetLoginPage(getDriver())
+                .open()
+                .login("adminTest", "test");
+        Actions action = new Actions(getDriver());
+        VolvoSPIDRAdminDashBoardPage adminDashboard = new VolvoSPIDRAdminDashBoardPage(getDriver());
+        adminDashboard.openManagerApproval();
+        System.out.println("Manager Approval shortcut opened");
+        sp.searchForRecord("test record 1");
+        homePage1.productsStagingTab.click();
+        System.out.println("Part Searched");
+        Thread.sleep(10000);
+        sp.clickUsingJS(sp.searchedItemCheckbox);
+        System.out.println("Check box clicked");
+        sp.editButton.click();
+        System.out.println("Part opened");
+        Thread.sleep(20000);
+        ProductPage prPage = new ProductPage(getDriver());
+        prPage.partDataTab.click();
+        Thread.sleep(20000);
+        System.out.println("Part data side bar clicked");
+        prPage.csEnrichmentComplete.click();
+        Thread.sleep(20000);
+        System.out.println("CS enrichment clicked");
+        String actualText = prPage.csEnrichmentCompleteDD.getText();
+        System.out.println(actualText);
+
+        prPage.csEnrichmentComplete1.click();
+        Thread.sleep(20000);
+        System.out.println("CS enrichment clicked1");
+
     }
 }

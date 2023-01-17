@@ -36,9 +36,9 @@ public class AdminTest extends WebTestBase {
         Thread.sleep(2000);
         System.out.println("Assign Taxonomy shortcut opened");
         SearchPage sp = new SearchPage(getDriver());
-        //sp.searchForRecord("TaxonomyTest");
-        //homePage.productsStagingTab.click();
-        //System.out.println("Part Searched");
+        sp.searchForRecord("TaxonomyTest");
+        homePage.productsStagingTab.click();
+        System.out.println("Part Searched");
         Thread.sleep(10000);
         sp.clickUsingJS(sp.searchedItemCheckbox);
         System.out.println("Check box clicked");
