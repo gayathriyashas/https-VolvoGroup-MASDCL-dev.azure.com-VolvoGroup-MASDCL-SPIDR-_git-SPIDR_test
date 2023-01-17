@@ -1,18 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="SupplierTests">
+<suite name="SupplierTests" parallel="false" >
     <listeners>
         <listener class-name="com.volvo.project.components.listeners.TestngContentListener"/>
     </listeners>
-    <test name="BrandedPartUpdate">
+    <test name="Login">
+    <classes>
+        <class name="com.volvo.project.tests.ui.SupplierTest">
+            <methods>
+                <include name="loginTo_SPIDR_Application"></include>
+            </methods>
+        </class>
+    </classes>
+    </test>
+    <test name="CreateNewCost">
         <classes>
-            <class name="com.volvo.project.tests.ui.TestSuiteExampleSPIDR">
+            <class name="com.volvo.project.tests.ui.SupplierTest">
                 <methods>
-                    <include name="loginTo_SPIDR_Application"></include>
-                    <include name="verifySupplierIsAbleToImportProductFileIntoSPIDRApplication_ValidFiles"></include>
+                    <include name="verifySupplierIsAbleToImportCostFileIntoSPIDRApplication_ValidFiles"></include>
+                </methods>
+            </class>
+            <class name="com.volvo.project.tests.ui.AdminTest">
+                <methods>
+                    <include name="deleteCost"></include>
                 </methods>
             </class>
         </classes>
     </test>
-
+    <test name="CreateNewProduct">
+        <classes>
+            <class name="com.volvo.project.tests.ui.SupplierTest">
+                <methods>
+                    <include name="verifySupplierIsAbleToImportProductFileIntoSPIDRApplication_ValidFiles"></include>
+                </methods>
+            </class>
+            <class name="com.volvo.project.tests.ui.AdminTest">
+                <methods>
+                    <include name="deleteProduct"></include>
+                </methods>
+            </class>
+        </classes>
+    </test>
 </suite>

@@ -6,7 +6,7 @@
     </listeners>
     <test name="BrandedPartUpdate">
         <classes>
-            <class name="com.volvo.project.tests.ui.TestSuiteExampleSPIDR">
+            <class name="com.volvo.project.tests.ui.SupplierTest">
                 <methods>
                     <include name="editpartBrandedPart"></include>
                 </methods>
@@ -20,5 +20,23 @@
             </class>
         </classes>
     </test>
-
+    <test name="NewPart">
+        <classes>
+            <class name="com.volvo.project.tests.ui.SupplierTest">
+                <methods>
+                    <include name="verifySupplierIsAbleToImportProductFileIntoSPIDRApplication_ValidFiles"></include>
+                </methods>
+            </class>
+            <class name="com.volvo.project.tests.ui.CSTest">
+                <methods>
+                    <include name="verifyNewPartsareSettoNewandAreUnderAssignTaxonomyShortcut"></include>
+                </methods>
+            </class>
+            <class name="com.volvo.project.tests.ui.AdminTest">
+                <methods>
+                    <include name="deleteProduct"></include>
+                </methods>
+            </class>
+        </classes>
+    </test>
 </suite>

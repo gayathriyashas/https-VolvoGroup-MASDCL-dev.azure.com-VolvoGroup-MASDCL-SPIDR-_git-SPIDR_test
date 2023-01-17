@@ -24,7 +24,7 @@ public class SearchPage extends PageObject {
     @FindBy(xpath = "//a[contains(text(), ' Delete')]")
     public WebElement deleteButton;
 
-    @FindBy(xpath = "//div[@class ='modal-content container-fluid']//button[contains(text(),' Yes ')]")
+    @FindBy(xpath = "//div[@class ='modal-content container-fluid']//button[contains(text(), 'Yes')]")
     public WebElement deleteYes;
 
     @FindBy(xpath = "//div[@class='nav-link active']//span[contains(text(),'Volvo Products Staging')]")

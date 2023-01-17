@@ -1,6 +1,7 @@
 package com.volvo.project.base;
 
 import com.google.common.collect.ImmutableMap;
+import com.volvo.project.components.datatdriventesting.ExcelLibrary;
 import com.volvo.project.components.setup.WebDriverFactory;
 import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
@@ -105,6 +106,17 @@ public class WebTestBase extends TestBase {
         return env;
     }
 
+    public void writeToMultiStepExcel(String partName) {
+        ExcelLibrary objExcelFile = new ExcelLibrary();
+        String multiMethodfilePath = "C:/testOpsJavaFramework/src/test/resources/testdata/MultipleMethodTestData.xlsx";
+        objExcelFile.writeToExcel(multiMethodfilePath, 0,0,partName);
+    }
+
+    public String readFromMultiStepExcel() {
+        ExcelLibrary objExcelFile = new ExcelLibrary();
+        String multiMethodfilePath = "src/test/resources/testdata/MultipleMethodTestData.xlsx";
+        return objExcelFile.readFromExcel(multiMethodfilePath, 0,0);
+    }
     protected static synchronized WebDriver getDriver() {
         return driver.get();
     }
