@@ -62,7 +62,7 @@ public class ProductDataValidation extends WebTestBase
         homePage.hamburgeIcon();
         homePage.stagingMenu();
         homePage.volvo_Products_Staging_SubMenu();
-        sp.searchForRecord("VMRS validation");
+        //sp.searchForRecord("VMRS validation");
         Thread.sleep(10000);
 
        homePage.productsStagingTab.click();

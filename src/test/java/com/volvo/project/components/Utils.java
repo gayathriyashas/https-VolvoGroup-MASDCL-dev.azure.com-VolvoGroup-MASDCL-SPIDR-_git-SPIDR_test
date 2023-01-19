@@ -1,5 +1,6 @@
 package com.volvo.project.components;
 
+import com.volvo.project.components.datatdriventesting.ExcelLibrary;
 import com.volvo.project.parameters.DockerHubParams;
 import com.volvo.project.parameters.ExecutionParameters;
 import com.volvo.project.parameters.ExecutionParametersLoader;
@@ -94,5 +95,17 @@ public class Utils {
             }
         }
         new File(pathDir + File.separator + "target" + File.separator + "TestLogReport.html").delete();
+    }
+
+    public void writeToMultiStepExcel(String partName) {
+        ExcelLibrary objExcelFile = new ExcelLibrary();
+        String multiMethodfilePath = "C:/testOpsJavaFramework/src/test/resources/testdata/MultipleMethodTestData.xlsx";
+        objExcelFile.writeToExcel(multiMethodfilePath, 0,0,partName);
+    }
+
+    public String readFromMultiStepExcel() {
+        ExcelLibrary objExcelFile = new ExcelLibrary();
+        String multiMethodfilePath = "src/test/resources/testdata/MultipleMethodTestData.xlsx";
+        return objExcelFile.readFromExcel(multiMethodfilePath, 0,0);
     }
 }

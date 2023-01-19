@@ -66,7 +66,7 @@ public class AdminTest extends WebTestBase {
     }
 
     @ExcelDataProvider(fileName = "AdminLoginValues.xlsx",tab = "testCase1")
-    @Test(groups = {"smoke", "regression"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
+    @Test(priority =100,groups = {"smoke", "regression"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
     public void deleteProduct(String name, String password,String col3) throws Exception {
         String partNumber = "";
         dataProviderTestParameters.set(name + "," + password + ", + col3 + ");

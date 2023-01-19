@@ -1,6 +1,8 @@
 package com.volvo.project.pages;
 
 import com.volvo.project.components.PageObject;
+import com.volvo.project.components.Utils;
+import com.volvo.project.components.datatdriventesting.ExcelLibrary;
 import com.volvo.project.components.fileoperations.VerifyZipFolderAndExtractFiles;
 import io.qameta.allure.Step;
 import org.openqa.selenium.*;
@@ -9,9 +11,12 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.List;
+import java.util.Locale;
+import java.util.Random;
 import java.util.Set;
 
 public class VolvoSupplierDashBoardPage extends PageObject {
@@ -598,4 +603,80 @@ public class VolvoSupplierDashBoardPage extends PageObject {
         //Switch to the parent window
         driver.switchTo().window(parentWindowHandle);
     }
+
+    public void createNewPart() throws InterruptedException, IOException {
+        verifySupplierDashboard();
+        exportProductData_RadioButton();
+        downloadUploadProgressOperation();
+        //VerifyZipFolderAndExtractFiles objZip = new VerifyZipFolderAndExtractFiles();
+        String filePath=VerifyZipFolderAndExtractFiles.unZipFolder();
+        //Excel File Existing row update operation
+        ExcelLibrary objExcelFile = new ExcelLibrary();
+        String partName = Utils.getRandomString(8).toUpperCase();
+        writeToMultiStepExcel(partName);
+        objExcelFile.writeToExcel(filePath,2,4,partName);
+        objExcelFile.writeToExcel(filePath,2,28, "Uncategorized");
+        clickChooseFileImportProductData();
+        //supplierPage.refreshDownloadUploadProgress();
+        getTotalProcessedRecordsUnderDownloadUploadProgress();
+        //supplierPage.get
+    }
+
+    public void editPart(String[] attributestoChange) throws InterruptedException, IOException {
+        String partToUpdate = readFromMultiStepExcel();
+        verifySupplierDashboard();
+        exportProductData_RadioButton();
+        downloadUploadProgressOperation();
+        //VerifyZipFolderAndExtractFiles objZip = new VerifyZipFolderAndExtractFiles();
+        String filePath=VerifyZipFolderAndExtractFiles.unZipFolder();
+        Thread.sleep(1000);
+        //Excel File Existing row update operation
+        ExcelLibrary objExcelFile = new ExcelLibrary();
+        int rowCount= objExcelFile.getRowCount(filePath);
+        int partRow = -1;
+        for(int i=1; i<= rowCount; i++) {
+            String rowPartName = objExcelFile.readFromExcel(filePath, i, 4);
+            if(rowPartName.equals(partToUpdate)) {
+                partRow = i;
+            }
+        }
+        System.out.println("Part Row Number: " +partRow);
+        for(int i=0; i<attributestoChange.length; i++) {
+            switch (attributestoChange[i].toLowerCase()) {
+                case "brand":
+                    String brandedPartInitial = objExcelFile.readFromExcel(filePath, partRow, 15);
+                    String brandedPartFinal;
+                    //objExcelFile.writeToExcel(filePath,2,4, "testName");
+                    if (brandedPartInitial.equals("Y"))
+                        objExcelFile.writeToExcel(filePath, partRow, 15, "N");
+
+                    else
+                        objExcelFile.writeToExcel(filePath, partRow, 15, "Y");
+                    brandedPartFinal = objExcelFile.readFromExcel(filePath, partRow, 15);
+                    break;
+                case "weight_i_lb_d":
+                    objExcelFile.writeToExcel(filePath, partRow,56, String.valueOf(Math.random()));
+                    break;
+                case "height_i_in_d":
+                    objExcelFile.writeToExcel(filePath, partRow,41, String.valueOf(Math.random()));
+                    break;
+                case "supersession to":
+                    objExcelFile.writeToExcel(filePath, partRow, 10, Utils.getRandomString(8));
+                    break;
+                case "supersession from":
+                    objExcelFile.writeToExcel(filePath, partRow, 9, Utils.getRandomString(8));
+                    break;
+
+            }
+        }
+        List<WebElement> check = driver.findElements(By.xpath("//button[contains(text(), ' Cancel ')]"));
+        if(check.size() > 0) {
+            check.get(0).click();
+        }
+        clickChooseFileImportProductData();
+        //supplierPage.refreshDownloadUploadProgress();
+        getTotalProcessedRecordsUnderDownloadUploadProgress();
+    }
+
+
 }

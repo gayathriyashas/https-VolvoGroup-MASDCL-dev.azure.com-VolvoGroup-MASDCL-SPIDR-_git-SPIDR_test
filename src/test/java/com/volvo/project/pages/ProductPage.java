@@ -1,16 +1,19 @@
 package com.volvo.project.pages;
 
 import com.volvo.project.components.PageObject;
+import com.volvo.project.components.Utils;
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.junit.Assert;
+import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.List;
 
 public class ProductPage extends PageObject {
     //private static final String SEARCH_PMR_FORM_NAME = "Welcome to the Secure Area. When you are done click logout below.";
@@ -29,6 +32,9 @@ public class ProductPage extends PageObject {
     //sidebar
     @FindBy(xpath = "//span[contains(text(), 'Category Specific Attributes')]")
     WebElement categorySpecificArrtibutesTab;
+
+    @FindBy(xpath = "//span[contains(text(), 'Part Data')]")
+    WebElement partDataTab;
 
     @FindBy(xpath = "//span[contains(text(), 'Admin')]")
     WebElement adminTab;
@@ -74,9 +80,6 @@ public class ProductPage extends PageObject {
 
     @FindBy(xpath = "//span[contains(text(), 'Manufacturer Name')]/../../../p/span")
     public WebElement manufacturerName;
-
-   @FindBy(xpath = "//span[contains(text(), 'CS Enrichment Complete')]/../../../p/span")
-    WebElement CSEnrichmentComplete;
 
    @FindBy(xpath = "//span[contains(text(), 'Part long Description (Brand)')]/../../../p/span")
    public WebElement partLongDescBrand;
@@ -136,7 +139,19 @@ public class ProductPage extends PageObject {
     @FindBy(xpath = "//span[contains(text(), 'VMRS CK33')]/../../../p/span")
     public WebElement VMRSCK33;
 
-    //Review Attributes List
+    //Part Data
+    @FindBy(xpath = "//span[contains(text(), 'CS Enrichment Complete')]/../../../p/span")
+    WebElement CSEnrichmentComplete;
+
+    @FindBy(xpath = "//input[@id='mat-input-2']/..")
+    WebElement CSEAfterClick;
+
+    @FindBy(id = "cdk-overlay-29")
+    WebElement CSDropDown;
+
+    @FindBy(xpath = "//div[@role='listbox']//span[contains(text(), 'Yes')]")
+    WebElement CSEYes;
+
     @FindBy(xpath = "//div[contains(text(), 'Branded Part')]")
     WebElement reviewAttributeList_BrandedPart;
 
@@ -173,13 +188,75 @@ public class ProductPage extends PageObject {
             Thread.sleep(1000);
         }
     }
+    @Step("Open Part Data Tab")
+    public void openPartDataTab() throws InterruptedException {
+        partDataTab.click();
+        Thread.sleep(1000);
+    }
+
+    @Step("Set CS Enrichment to Yes")
+    public void setCSEnrichmentComplete() throws InterruptedException {
+        CSEnrichmentComplete.click();
+
+        Thread.sleep(1000);
+        clickUsingJS(CSEAfterClick);
+        Thread.sleep(1000);
+        CSEYes.click();
+        Thread.sleep(1000);
+
+    }
 
     @Step("Set Taxonomy Node")
     public void setTaxonomyNode(String taxonomy) throws InterruptedException {
+        openCategorization();
         scrollElementIntoView(taxonomyNode);
         taxonomyNode.click();
         taxonomyNodeTextBox.sendKeys(Keys.chord(Keys.CONTROL, "a"));
         taxonomyNodeTextBox.sendKeys(Keys.DELETE);
         taxonomyNodeTextBox.sendKeys(taxonomy);
+    }
+
+    public void verifyStatus(String statusExpected) {
+        scrollElementIntoView(partStatusDropdown);
+        System.out.println("Scroll to Part Status dropdown");
+        partStatusDropdown.click();
+        System.out.println("Open Part Status Dropdown");
+        String statusActual = partStatus.getText().trim();
+        Assert.assertTrue(statusActual.equals("New"));
+
+    }
+
+    public void verifyTaxonomy(String taxonomyExpected) throws InterruptedException {
+        openCategorization();
+        scrollElementIntoView(taxonomyNode);
+        String taxonomyActual = taxonomyNode.getText().trim();
+        Assert.assertTrue(taxonomyActual.equals(taxonomyExpected));
+    }
+
+    public void verifyAttributeChanged(String attributeChanged) throws InterruptedException {
+        openPartDataTab();
+        List<WebElement> attributes = driver.findElements(By.xpath("//div[@id='repitableGrid']//div[contains(text(), '"+attributeChanged+"')]"));
+        Assert.assertTrue(attributes.size() == 1);
+    }
+
+    public String InternalPartNameChange() throws InterruptedException {
+        scrollElementIntoView(internalPartNameAtt);
+        System.out.println("Scrolled to element");
+        Thread.sleep(10000);
+        internalPartNameAtt.click();
+        String actualText = internalPartNameTextArea.getText();
+        String newPartName = Utils.getRandomString(8).toUpperCase();
+        System.out.println(actualText);
+        internalPartNameTextArea.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+        internalPartNameTextArea.sendKeys(Keys.DELETE);
+        internalPartNameTextArea.sendKeys(newPartName);
+        return newPartName;
+    }
+
+    public void verifyPartSaved(String attributeChanged, String newValue) {
+        waitForElementToBeVisible(supplierPartDescription);
+        WebElement att = driver.findElement(By.xpath("//span[contains(text(), '"+attributeChanged+"')]/../../../p/span"));
+        scrollElementIntoView(att);
+        Assert.assertTrue(att.getText().equals(newValue));
     }
 }

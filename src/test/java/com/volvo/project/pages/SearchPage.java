@@ -2,6 +2,7 @@ package com.volvo.project.pages;
 
 import com.volvo.project.components.PageObject;
 import io.qameta.allure.Step;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -9,6 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.List;
 
 public class SearchPage extends PageObject {
     //private static final String SEARCH_PMR_FORM_NAME = "Welcome to the Secure Area. When you are done click logout below.";
@@ -29,6 +31,9 @@ public class SearchPage extends PageObject {
 
     @FindBy(xpath = "//div[@class='nav-link active']//span[contains(text(),'Volvo Products Staging')]")
     public WebElement volvoProductsStagingTabNew;
+
+    @FindBy(xpath = "//span[contains(text(), 'Volvo Products Staging')]/../span[3]")
+    public WebElement closeVolvoProductsStaging;
 
     @FindBy(xpath = "//div[@class='ng-star-inserted']/span[@class='ag-paging-row-summary-panel']/span[3]")
     public WebElement numberOfRecords;
@@ -68,27 +73,58 @@ public class SearchPage extends PageObject {
     }
 
     @Step("Search for Record")
-    public void searchForRecord(String record) throws InterruptedException {
+    public void searchForRecord() throws InterruptedException {
+        String record = readFromMultiStepExcel();
         String number;
-        try {
             InternetHomePage IHPage = new InternetHomePage(driver);
             IHPage.searchRecord(record);
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(120));
-            wait.until(ExpectedConditions.visibilityOf(numberOfRecords));
-            number = numberOfRecords.getText();
-            if(number == "1")  {
-                System.out.println("Record is found");
+
+            wait:
+            for (int i = 1; i <= 10; i++) {
+                Thread.sleep(4000);
+                System.out.println("Record Number: " + getRecordNumber());
+                if (getRecordNumber() == 0) {
+                    Thread.sleep(20000);
+                    Thread.sleep(20000);
+                    Thread.sleep(20000);
+                    Thread.sleep(20000);
+                    driver.findElement(By.xpath(" //strong[contains(text(), '" + record + "')]/../button")).click();
+                    Thread.sleep(1000);
+                    IHPage.searchRecord(record);
+                }
+                else {
+                    break wait;
+                }
             }
-            else {
-                System.out.println("Issue found with record search");
-                
-            }
-        }
-        catch (Exception e) {
-            System.out.println("Some Exception happened");
-            System.out.println("Record not found");
-        }
 
     }
 
+    public void searchForRecord(String record) throws InterruptedException {
+        InternetHomePage IHPage = new InternetHomePage(driver);
+        IHPage.searchRecord(record);
+    }
+    public int getRecordNumber() {
+        List<WebElement> recordsListed= driver.findElements(By.xpath("//span[contains(text(),'No records to view')]"));
+        if(recordsListed.size() != 0) {
+            return 0;
+        }
+        else {
+            return Integer.parseInt(numberOfRecords.getText());
+        }
+    }
+
+    public void openRecord() {
+        clickUsingJS(searchedItemCheckbox);
+        System.out.println("Check box clicked");
+        editButton.click();
+        System.out.println("Part opened");
+    }
+
+    public void deleteRecord() throws InterruptedException {
+        clickUsingJS(searchedItemCheckbox);
+        deleteButton.click();
+        Thread.sleep(1000);
+        deleteYes.click();
+        Thread.sleep(1000);
+    }
 }

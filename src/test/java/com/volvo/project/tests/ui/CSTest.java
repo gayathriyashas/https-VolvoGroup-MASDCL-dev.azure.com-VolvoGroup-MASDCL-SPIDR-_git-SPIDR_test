@@ -10,6 +10,7 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Stories;
 import io.qameta.allure.Story;
 import org.junit.Assert;
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.Point;
@@ -64,7 +65,13 @@ public class CSTest extends WebTestBase {
         csDash.openAssignTaxonomy();
         System.out.println("Assign Taxonomy shortcut opened");
         SearchPage sp = new SearchPage(getDriver());
-        sp.searchForRecord(partNumber);
+       // sp.searchForRecord(partNumber);
+        for(int i=1; i<=5; i++) {
+            if (Integer.parseInt(sp.numberOfRecords.getText()) == 0) {
+                Thread.sleep(60000);
+             //   sp.searchForRecord(readFromMultiStepExcel());
+            }
+        }
         homePage.productsStagingTab.click();
         System.out.println("Part Searched");
         Thread.sleep(10000);
@@ -88,8 +95,8 @@ public class CSTest extends WebTestBase {
     }
 
     @ExcelDataProvider(fileName = "CSLoginValues.xlsx",tab = "testCase1")
-    @Test(groups = {"smoke", "regression, CS"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
-    public void setTaxonomy(String name, String password,String col3) throws Exception {
+    @Test(priority =10, groups = {"smoke", "regression, CS"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
+    public void setTaxonomyandCSEnrichment(String name, String password,String col3) throws Exception {
         dataProviderTestParameters.set(name + "," + password+", + col3 + ");
         step("Launch Browser and logged into SPIDR Application");
         InternetHomePage homePage = new InternetLoginPage(getDriver())
@@ -104,7 +111,17 @@ public class CSTest extends WebTestBase {
         csDash.openAssignTaxonomy();
         System.out.println("Assign Taxonomy shortcut opened");
         SearchPage sp = new SearchPage(getDriver());
-        sp.searchForRecord("SC20");
+        String partName = readFromMultiStepExcel();
+       // sp.searchForRecord(partName);
+        for(int i=1; i<=10; i++) {
+            System.out.println("Record Number: "+sp.getRecordNumber());
+            if (sp.getRecordNumber()== 0) {
+                Thread.sleep(60000);
+                getDriver().findElement(By.xpath(" //strong[contains(text(), '"+partName+"')]/../button")).click();
+                Thread.sleep(1000);
+           //     sp.searchForRecord(partName);
+            }
+        }
         homePage.productsStagingTab.click();
         System.out.println("Part Searched");
         Thread.sleep(10000);
@@ -118,12 +135,14 @@ public class CSTest extends WebTestBase {
         prPage.openCategorization();
         prPage.scrollElementIntoView(prPage.taxonomyNode);
         prPage.setTaxonomyNode("Driveline.Components (21401)");
+        prPage.openPartDataTab();
+        prPage.setCSEnrichmentComplete();
         prPage.saveButton.click();
         Thread.sleep(5000);
     }
 
     @ExcelDataProvider(fileName = "CSLoginValues.xlsx",tab = "testCase1")
-    @Test(priority=2,groups = {"smoke", "regression, CS"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
+    @Test(priority=30,groups = {"smoke", "regression, CS"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
     public void verifyBrandedPartUpdate(String name, String password,String col3) throws Exception {
         dataProviderTestParameters.set(name + "," + password+", + col3 + ");
         String partNumber = "";
@@ -137,12 +156,18 @@ public class CSTest extends WebTestBase {
         );
         VolvoCSDashBoardPage csDash = new VolvoCSDashBoardPage(getDriver());
         csDash.openReviewUpdatedParts();
-        ExcelLibrary objExcelFile = new ExcelLibrary();
-        String multiMethodfilePath = "src/test/resources/testdata/MultipleMethodTestData.xlsx";
-        partNumber = objExcelFile.readFromExcel(multiMethodfilePath, 0,0);
+        partNumber = readFromMultiStepExcel();
         SearchPage sp = new SearchPage(getDriver());
-        sp.searchForRecord(partNumber);
-        Thread.sleep(10000);
+       // sp.searchForRecord(partNumber);
+        for(int i=1; i<=10; i++) {
+            System.out.println("Record Number: "+sp.getRecordNumber());
+            if (sp.getRecordNumber()== 0) {
+                Thread.sleep(60000);
+                getDriver().findElement(By.xpath(" //strong[contains(text(), '"+partNumber+"')]/../button")).click();
+                Thread.sleep(1000);
+            //    sp.searchForRecord(partNumber);
+            }
+        }
         Assert.assertTrue(Integer.parseInt(sp.numberOfRecords.getText()) > 0);
     }
 

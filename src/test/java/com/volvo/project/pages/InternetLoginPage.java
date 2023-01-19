@@ -1,11 +1,15 @@
 package com.volvo.project.pages;
 
 import com.volvo.project.components.PageObject;
+import com.volvo.project.components.datatdriventesting.ExcelLibrary;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import java.time.Duration;
+
+import static io.qameta.allure.Allure.step;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class InternetLoginPage extends PageObject {
     //private static final String URL_INTERNET_LOGIN_PAGE = "https://the-internet.herokuapp.com/login";
@@ -34,6 +38,7 @@ public class InternetLoginPage extends PageObject {
     @Step("Open Internet Login Page")
     public InternetLoginPage open() {
         driver.get(URL_INTERNET_LOGIN_PAGE);
+        driver.manage().window().maximize();
         return this;
     }
 
@@ -58,5 +63,31 @@ public class InternetLoginPage extends PageObject {
     public InternetHomePage clickSubmitButton() {
         clickButton(loginButton);
         return new InternetHomePage(driver);
+    }
+
+    @Step("Login")
+    public void login(String role) {
+        step("Launch Browser and logged into SPIDR Application");
+
+        ExcelLibrary objExcelFile = new ExcelLibrary();
+        String filePath = "src/test/resources/testdata/LoginValuesMap.xlsx";
+        int partRow = -1;
+        for(int i=1; i<= objExcelFile.getRowCount(filePath); i++) {
+            String rowPartName = objExcelFile.readFromExcel(filePath, i, 0);
+            if(rowPartName.equals(role)) {
+                partRow = i;
+            }
+        }
+        String name = objExcelFile.readFromExcel(filePath, partRow, 1);
+        String password = objExcelFile.readFromExcel(filePath, partRow, 2);
+        String loginLabel = objExcelFile.readFromExcel(filePath, partRow, 3);
+        InternetHomePage homePage = new InternetLoginPage(driver)
+                .open()
+                .login(name, password);
+
+        step(
+                "Check if user is logged in",
+                () -> assertThat(homePage.isLoaded(loginLabel)).isTrue()
+        );
     }
 }

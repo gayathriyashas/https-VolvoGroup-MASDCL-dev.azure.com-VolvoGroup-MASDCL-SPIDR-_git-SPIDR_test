@@ -77,7 +77,7 @@ public class ExcelLibrary {
     public int getRowCount(String excelName) {
         int rowCnt = 0;
         try {
-            FileInputStream fis = new FileInputStream("src/test/resources/"+excelName);
+            FileInputStream fis = new FileInputStream(excelName);
             Workbook wb = WorkbookFactory.create(fis);
             Sheet s = wb.getSheetAt(0);
             rowCnt = s.getLastRowNum();

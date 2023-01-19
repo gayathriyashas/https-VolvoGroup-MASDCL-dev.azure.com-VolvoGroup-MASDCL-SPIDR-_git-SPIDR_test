@@ -2,6 +2,7 @@ package com.volvo.project.pages;
 
 import com.ibm.msg.client.commonservices.Log.Log;
 import com.volvo.project.components.PageObject;
+import com.volvo.project.components.datatdriventesting.ExcelLibrary;
 import io.qameta.allure.Step;
 import org.apache.xml.utils.StringComparable;
 import org.openqa.selenium.*;
@@ -11,6 +12,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.Action;
+
+import static io.qameta.allure.Allure.step;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class InternetHomePage extends PageObject {
     //private static final String SEARCH_PMR_FORM_NAME = "Welcome to the Secure Area. When you are done click logout below.";
@@ -142,6 +146,8 @@ public class InternetHomePage extends PageObject {
         WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(60));
         wait.until(ExpectedConditions.elementToBeClickable(searchField));
         searchField.click();
+        searchField.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+        searchField.sendKeys(Keys.DELETE);
         searchField.sendKeys(value);
         searchField.sendKeys(Keys.RETURN);
         System.out.println("Entered Record: "+value);
@@ -158,6 +164,12 @@ public class InternetHomePage extends PageObject {
         searchRecord.click();
         System.out.println("Record found and clicked: "+searchRecord);
         //return new InternetHomePage(driver);
+    }
+
+    public void openProductStaging() throws InterruptedException {
+        hamburgeIcon();
+        stagingMenu();
+        volvo_Products_Staging_SubMenu();
     }
 
 }
