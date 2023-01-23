@@ -52,6 +52,35 @@ public class SupplierTest extends WebTestBase {
         sp.deleteRecord();
     }
 
+    @Test(groups = {"smoke", "regression, CS"})
+    public void verifyInternalPartNameEqualsPartDescription() throws Exception {
+        InternetLoginPage lp = new InternetLoginPage(getDriver());
+        lp.open();
+        lp.login("Supplier");
+        InternetHomePage homePage = new InternetHomePage(getDriver());
+        VolvoSupplierDashBoardPage supp = new VolvoSupplierDashBoardPage(getDriver());
+        supp.createNewPart();
+        homePage.logout();
+        lp.login("Admin");
+        homePage.openProductStaging();
+        System.out.println("Products staging opened");
+        SearchPage sp = new SearchPage(getDriver());
+        sp.searchForRecord();
+        Thread.sleep(10000);
+        sp.openRecord();
+        Thread.sleep(20000);
+        ProductPage pr = new ProductPage(getDriver());
+        pr.changeViewToNoPreference();
+        pr.scrollElementIntoView(pr.supplierPartDescription);
+        String partDescription = pr.supplierPartDescription.getText();
+        pr.verifyPart("Internal Part Name", partDescription);
+        pr.clickUsingJS(pr.closePage);
+        Thread.sleep(10000);
+        sp.searchForRecord();
+        sp.deleteRecord();
+        Thread.sleep(3000);
+    }
+
     @ExcelDataProvider(fileName = "SupplierLoginValues.xlsx",tab = "testCase1")
     @Test(priority =1,groups = {"smoke", "regression"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
     public void verifySupplierIsAbleToImportProductFileIntoSPIDRApplication_ValidFiles(String name, String password,String col3) throws Exception {

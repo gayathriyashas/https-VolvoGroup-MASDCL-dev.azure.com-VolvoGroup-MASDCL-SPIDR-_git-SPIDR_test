@@ -5,14 +5,8 @@ import com.volvo.project.components.Utils;
 import io.qameta.allure.Step;
 import org.junit.Assert;
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Action;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
 import java.util.List;
 
 public class ProductPage extends PageObject {
@@ -165,6 +159,9 @@ public class ProductPage extends PageObject {
     @FindBy(xpath = "//span[contains(text(), 'Manager Approval')]/../../../p/span")
     WebElement managerApproval;
 
+    @FindBy(xpath = "//tabset//li[3]//span[3]")
+    public WebElement closePage;
+
     @Step("Change view to No Preference")
     public void changeViewToNoPreference() throws InterruptedException {
         viewDropDown.click();
@@ -253,7 +250,7 @@ public class ProductPage extends PageObject {
         return newPartName;
     }
 
-    public void verifyPartSaved(String attributeChanged, String newValue) {
+    public void verifyPart(String attributeChanged, String newValue) {
         waitForElementToBeVisible(supplierPartDescription);
         WebElement att = driver.findElement(By.xpath("//span[contains(text(), '"+attributeChanged+"')]/../../../p/span"));
         scrollElementIntoView(att);

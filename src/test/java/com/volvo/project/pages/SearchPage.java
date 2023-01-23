@@ -38,6 +38,9 @@ public class SearchPage extends PageObject {
     @FindBy(xpath = "//div[@class='ng-star-inserted']/span[@class='ag-paging-row-summary-panel']/span[3]")
     public WebElement numberOfRecords;
 
+    @FindBy(xpath = "//div[@row-id='0']/div[3]//span")
+    WebElement recordSupplierName;
+
     public SearchPage(WebDriver driver) {
         super(driver);
     }
@@ -80,10 +83,11 @@ public class SearchPage extends PageObject {
             IHPage.searchRecord(record);
 
             wait:
-            for (int i = 1; i <= 10; i++) {
+            for (int i = 1; i <= 20; i++) {
                 Thread.sleep(4000);
                 System.out.println("Record Number: " + getRecordNumber());
-                if (getRecordNumber() == 0) {
+                System.out.println("Supplier name: "+recordSupplierName.getText().trim());
+                if (getRecordNumber() == 0 || recordSupplierName.getText().trim().length() == 0) {
                     Thread.sleep(20000);
                     Thread.sleep(20000);
                     Thread.sleep(20000);

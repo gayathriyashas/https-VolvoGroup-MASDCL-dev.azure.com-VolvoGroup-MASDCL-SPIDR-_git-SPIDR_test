@@ -615,6 +615,7 @@ public class VolvoSupplierDashBoardPage extends PageObject {
         String partName = Utils.getRandomString(8).toUpperCase();
         writeToMultiStepExcel(partName);
         objExcelFile.writeToExcel(filePath,2,4,partName);
+        objExcelFile.writeToExcel(filePath,2,5,partName+" description");
         objExcelFile.writeToExcel(filePath,2,28, "Uncategorized");
         clickChooseFileImportProductData();
         //supplierPage.refreshDownloadUploadProgress();

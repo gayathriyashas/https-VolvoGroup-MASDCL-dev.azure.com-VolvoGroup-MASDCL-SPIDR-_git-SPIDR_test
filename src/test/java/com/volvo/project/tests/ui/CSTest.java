@@ -2,175 +2,247 @@ package com.volvo.project.tests.ui;
 
 import com.volvo.project.base.WebTestBase;
 import com.volvo.project.components.datatdriventesting.ExcelDataProvider;
-import com.volvo.project.components.datatdriventesting.ExcelLibrary;
 import com.volvo.project.components.datatdriventesting.TestDataProvider;
-import com.volvo.project.components.fileoperations.VerifyZipFolderAndExtractFiles;
 import com.volvo.project.pages.*;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Stories;
 import io.qameta.allure.Story;
-import org.junit.Assert;
-import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.annotations.Test;
-
-import java.util.Arrays;
 
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIOException;
 
 @Epic("epic 1234")
 @Stories({@Story("user story 12345")})
 public class CSTest extends WebTestBase {
 
     @ExcelDataProvider(fileName = "CSLoginValues.xlsx",tab = "testCase1")
-    @Test(groups = {"smoke", "regression, CS"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
-    public void loginTo_SPIDR_Application(String name, String password,String col3) throws InterruptedException {
-        dataProviderTestParameters.set(name + "," + password+", + col3 + ");
-        step("Launch Browser and logged into SPIDR Application");
-        InternetHomePage homePage = new InternetLoginPage(getDriver())
-                .open()
-                .login(name, password);
-
-        step(
-                "Check if user is logged in",
-                () -> assertThat(homePage.isLoaded(col3)).isTrue()
-        );
-
+    @Test(groups = {"smoke", "regression, CS"})
+    public void loginTo_SPIDR_Application() throws InterruptedException {
+        InternetLoginPage lp = new InternetLoginPage(getDriver());
+        lp.open();
+        lp.login("CS");
+        InternetHomePage homePage = new InternetHomePage(getDriver());
         step("Check if user is clicked Profile Menu");
                 homePage.profileMenuApp();
         step("Check if user is clicked LogOut Button");
         homePage.logout();
     }
 
-    @ExcelDataProvider(fileName = "CSLoginValues.xlsx",tab = "testCase1")
-    @Test(groups = {"smoke", "regression, CS"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
-    public void verifyNewPartsareSettoNewandAreUnderAssignTaxonomyShortcut(String name, String password,String col3) throws Exception {
-        dataProviderTestParameters.set(name + "," + password+", + col3 + ");
-        step("Launch Browser and logged into SPIDR Application");
-        InternetHomePage homePage = new InternetLoginPage(getDriver())
-                .open()
-                .login(name, password);
-        step(
-                "Check if user is logged in",
-                () -> assertThat(homePage.isLoaded(col3)).isTrue()
-        );
-        Actions action = new Actions(getDriver());
-        String partNumber = readFromMultiStepExcel();
-        VolvoCSDashBoardPage csDash = new VolvoCSDashBoardPage(getDriver());
-        csDash.openAssignTaxonomy();
-        System.out.println("Assign Taxonomy shortcut opened");
-        SearchPage sp = new SearchPage(getDriver());
-       // sp.searchForRecord(partNumber);
-        for(int i=1; i<=5; i++) {
-            if (Integer.parseInt(sp.numberOfRecords.getText()) == 0) {
-                Thread.sleep(60000);
-             //   sp.searchForRecord(readFromMultiStepExcel());
-            }
-        }
-        homePage.productsStagingTab.click();
-        System.out.println("Part Searched");
-        Thread.sleep(10000);
-        sp.clickUsingJS(sp.searchedItemCheckbox);
-        System.out.println("Check box clicked");
-        sp.editButton.click();
-        System.out.println("Part opened");
-        Thread.sleep(20000);
-        ProductPage prPage = new ProductPage(getDriver());
-        prPage.changeViewToNoPreference();
-        prPage.scrollElementIntoView(prPage.partStatusDropdown);
-        System.out.println("Scroll to Part Status dropdown");
-        prPage.partStatusDropdown.click();
-        System.out.println("Open Part Status Dropdown");
-        String status = prPage.partStatus.getText().trim();
-        Assert.assertTrue(status.equals("New"));
-        prPage.scrollElementIntoView(prPage.taxonomyNode);
-        String taxonomy = prPage.taxonomyNode.getText().trim();
-        Assert.assertTrue(taxonomy.equals("Uncategorized"));
+    @Test(groups = {"smoke", "regression, CS"})
+    public void NewPartImportedCorrectly() throws Exception {
+        InternetLoginPage lp = new InternetLoginPage(getDriver());
+        lp.open();
+        lp.login("Supplier");
+        InternetHomePage homePage = new InternetHomePage(getDriver());
+        VolvoSupplierDashBoardPage supp = new VolvoSupplierDashBoardPage(getDriver());
+        supp.createNewPart();
         homePage.logout();
-    }
-
-    @ExcelDataProvider(fileName = "CSLoginValues.xlsx",tab = "testCase1")
-    @Test(priority =10, groups = {"smoke", "regression, CS"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
-    public void setTaxonomyandCSEnrichment(String name, String password,String col3) throws Exception {
-        dataProviderTestParameters.set(name + "," + password+", + col3 + ");
-        step("Launch Browser and logged into SPIDR Application");
-        InternetHomePage homePage = new InternetLoginPage(getDriver())
-                .open()
-                .login(name, password);
-        step(
-                "Check if user is logged in",
-                () -> assertThat(homePage.isLoaded(col3)).isTrue()
-        );
-        Actions action = new Actions(getDriver());
+        lp.login("CS");
         VolvoCSDashBoardPage csDash = new VolvoCSDashBoardPage(getDriver());
         csDash.openAssignTaxonomy();
         System.out.println("Assign Taxonomy shortcut opened");
         SearchPage sp = new SearchPage(getDriver());
-        String partName = readFromMultiStepExcel();
-       // sp.searchForRecord(partName);
-        for(int i=1; i<=10; i++) {
-            System.out.println("Record Number: "+sp.getRecordNumber());
-            if (sp.getRecordNumber()== 0) {
-                Thread.sleep(60000);
-                getDriver().findElement(By.xpath(" //strong[contains(text(), '"+partName+"')]/../button")).click();
-                Thread.sleep(1000);
-           //     sp.searchForRecord(partName);
-            }
-        }
-        homePage.productsStagingTab.click();
+        sp.searchForRecord();
         System.out.println("Part Searched");
         Thread.sleep(10000);
-        sp.clickUsingJS(sp.searchedItemCheckbox);
-        System.out.println("Check box clicked");
-        sp.editButton.click();
-        System.out.println("Part opened");
+        sp.openRecord();
         Thread.sleep(20000);
-        ProductPage prPage = new ProductPage(getDriver());
-        prPage.changeViewToNoPreference();
-        prPage.openCategorization();
-        prPage.scrollElementIntoView(prPage.taxonomyNode);
-        prPage.setTaxonomyNode("Driveline.Components (21401)");
-        prPage.openPartDataTab();
-        prPage.setCSEnrichmentComplete();
-        prPage.saveButton.click();
-        Thread.sleep(5000);
+        ProductPage pr = new ProductPage(getDriver());
+        pr.changeViewToNoPreference();
+        pr.verifyStatus("New");
+        pr.verifyTaxonomy("Uncategorized");
+        homePage.logout();
+        lp.login("Admin");
+        homePage.openProductStaging();
+        sp.searchForRecord();
+        Thread.sleep(10000);
+        sp.deleteRecord();
     }
 
-    @ExcelDataProvider(fileName = "CSLoginValues.xlsx",tab = "testCase1")
-    @Test(priority=30,groups = {"smoke", "regression, CS"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
-    public void verifyBrandedPartUpdate(String name, String password,String col3) throws Exception {
-        dataProviderTestParameters.set(name + "," + password+", + col3 + ");
-        String partNumber = "";
-        step("Launch Browser and logged into SPIDR Application");
-        InternetHomePage homePage = new InternetLoginPage(getDriver())
-                .open()
-                .login(name, password);
-        step(
-                "Check if user is logged in",
-                () -> assertThat(homePage.isLoaded(col3)).isTrue()
-        );
+    @Test(groups = {"smoke", "regression, CS"})
+    public void EditBrand() throws Exception {
+        InternetLoginPage lp = new InternetLoginPage(getDriver());
+        lp.open();
+        lp.login("Supplier");
+        InternetHomePage homePage = new InternetHomePage(getDriver());
+        VolvoSupplierDashBoardPage supp = new VolvoSupplierDashBoardPage(getDriver());
+        supp.createNewPart();
+        homePage.logout();
+        lp.login("CS");
         VolvoCSDashBoardPage csDash = new VolvoCSDashBoardPage(getDriver());
-        csDash.openReviewUpdatedParts();
-        partNumber = readFromMultiStepExcel();
+        csDash.openAssignTaxonomy();
+        System.out.println("Assign Taxonomy shortcut opened");
         SearchPage sp = new SearchPage(getDriver());
-       // sp.searchForRecord(partNumber);
-        for(int i=1; i<=10; i++) {
-            System.out.println("Record Number: "+sp.getRecordNumber());
-            if (sp.getRecordNumber()== 0) {
-                Thread.sleep(60000);
-                getDriver().findElement(By.xpath(" //strong[contains(text(), '"+partNumber+"')]/../button")).click();
-                Thread.sleep(1000);
-            //    sp.searchForRecord(partNumber);
-            }
-        }
-        Assert.assertTrue(Integer.parseInt(sp.numberOfRecords.getText()) > 0);
+        sp.searchForRecord();
+        System.out.println("Part Searched");
+        Thread.sleep(10000);
+        sp.openRecord();
+        Thread.sleep(20000);
+        ProductPage pr = new ProductPage(getDriver());
+        pr.changeViewToNoPreference();
+        pr.setTaxonomyNode("Electrical.Batteries (42201)");
+        pr.openPartDataTab();
+        pr.setCSEnrichmentComplete();
+        pr.saveButton.click();
+        Thread.sleep(5000);
+        homePage.logout();
+        lp.login("Supplier");
+        String[] attributes = new String[] {"Brand"};
+        supp.editPart(attributes);
+        homePage.logout();
+        lp.login("CS");
+        csDash.openReviewUpdatedParts();
+        sp.searchForRecord();
+        System.out.println("Part Searched");
+        Thread.sleep(10000);
+        sp.openRecord();
+        Thread.sleep(20000);
+        pr.verifyAttributeChanged("Branded Part");
+        homePage.logout();
+        lp.login("Admin");
+        homePage.openProductStaging();
+        sp.searchForRecord();
+        Thread.sleep(10000);
+        sp.deleteRecord();
+        Thread.sleep(3000);
     }
 
+    @Test(groups = {"smoke", "regression, CS"})
+    public void EditCSA() throws Exception {
+        InternetLoginPage lp = new InternetLoginPage(getDriver());
+        lp.open();
+        lp.login("Supplier");
+        InternetHomePage homePage = new InternetHomePage(getDriver());
+        VolvoSupplierDashBoardPage supp = new VolvoSupplierDashBoardPage(getDriver());
+        supp.createNewPart();
+        homePage.logout();
+        lp.login("CS");
+        VolvoCSDashBoardPage csDash = new VolvoCSDashBoardPage(getDriver());
+        csDash.openAssignTaxonomy();
+        System.out.println("Assign Taxonomy shortcut opened");
+        SearchPage sp = new SearchPage(getDriver());
+        sp.searchForRecord();
+        System.out.println("Part Searched");
+        Thread.sleep(10000);
+        sp.openRecord();
+        Thread.sleep(20000);
+        ProductPage pr = new ProductPage(getDriver());
+        pr.changeViewToNoPreference();
+        pr.setTaxonomyNode("Electrical.Batteries (42201)");
+        pr.openPartDataTab();
+        pr.setCSEnrichmentComplete();
+        pr.saveButton.click();
+        Thread.sleep(5000);
+        homePage.logout();
+        lp.login("Supplier");
+        String[] attributes = new String[] {"HEIGHT_I_IN_D", "weight_i_lb_d"};
+        supp.editPart(attributes);
+        homePage.logout();
+        lp.login("CS");
+        csDash.openReviewUpdatedParts();
+        sp.searchForRecord();
+        System.out.println("Part Searched");
+        Thread.sleep(10000);
+        sp.openRecord();
+        Thread.sleep(20000);
+        pr.verifyAttributeChanged("Weight_M_kg_d");
+        pr.verifyAttributeChanged("Height_M_mm_d");
+        homePage.logout();
+        lp.login("Admin");
+        homePage.openProductStaging();
+        sp.searchForRecord();
+        Thread.sleep(10000);
+        sp.deleteRecord();
+        Thread.sleep(3000);
+    }
+
+    @Test(groups = {"smoke", "regression, CS"})
+    public void EditSupersession() throws Exception {
+        InternetLoginPage lp = new InternetLoginPage(getDriver());
+        lp.open();
+        lp.login("Supplier");
+        InternetHomePage homePage = new InternetHomePage(getDriver());
+        VolvoSupplierDashBoardPage supp = new VolvoSupplierDashBoardPage(getDriver());
+        supp.createNewPart();
+        homePage.logout();
+        lp.login("CS");
+        VolvoCSDashBoardPage csDash = new VolvoCSDashBoardPage(getDriver());
+        csDash.openAssignTaxonomy();
+        System.out.println("Assign Taxonomy shortcut opened");
+        SearchPage sp = new SearchPage(getDriver());
+        sp.searchForRecord();
+        System.out.println("Part Searched");
+        Thread.sleep(10000);
+        sp.openRecord();
+        Thread.sleep(20000);
+        ProductPage pr = new ProductPage(getDriver());
+        pr.changeViewToNoPreference();
+        pr.setTaxonomyNode("Electrical.Batteries (42201)");
+        pr.openPartDataTab();
+        pr.setCSEnrichmentComplete();
+        Thread.sleep(2000);
+        pr.saveButton.click();
+        Thread.sleep(5000);
+        homePage.logout();
+        lp.login("Supplier");
+        String[] attributes = new String[] {"Supersession From", "Supersession To"};
+        supp.editPart(attributes);
+        homePage.logout();
+        lp.login("CS");
+        csDash.openReviewUpdatedParts();
+        sp.searchForRecord();
+        System.out.println("Part Searched");
+        Thread.sleep(10000);
+        sp.openRecord();
+        Thread.sleep(20000);
+        pr.verifyAttributeChanged("Supersession From");
+        pr.verifyAttributeChanged("Supersession To");
+        homePage.logout();
+        lp.login("Admin");
+        homePage.openProductStaging();
+        sp.searchForRecord();
+        Thread.sleep(10000);
+        sp.deleteRecord();
+        Thread.sleep(3000);
+    }
+
+    @Test(groups = {"smoke", "regression, CS"})
+    public void verifyCSCanEditInternalPartName() throws Exception {
+        InternetLoginPage lp = new InternetLoginPage(getDriver());
+        lp.open();
+        lp.login("Supplier");
+        InternetHomePage homePage = new InternetHomePage(getDriver());
+        VolvoSupplierDashBoardPage supp = new VolvoSupplierDashBoardPage(getDriver());
+        supp.createNewPart();
+        homePage.logout();
+        lp.login("CS");
+        VolvoCSDashBoardPage csDash = new VolvoCSDashBoardPage(getDriver());
+        csDash.openAssignTaxonomy();
+        System.out.println("Assign Taxonomy shortcut opened");
+        SearchPage sp = new SearchPage(getDriver());
+        sp.searchForRecord();
+        System.out.println("Part Searched");
+        Thread.sleep(10000);
+        sp.openRecord();
+        Thread.sleep(20000);
+        ProductPage pr = new ProductPage(getDriver());
+        pr.changeViewToNoPreference();
+        String newInternalPartName = pr.InternalPartNameChange();
+        Thread.sleep(2000);
+        pr.saveButton.click();
+        Thread.sleep(5000);
+        pr.verifyPart("Internal Part Name", newInternalPartName);
+        homePage.logout();
+        lp.login("Admin");
+        homePage.openProductStaging();
+        sp.searchForRecord();
+        Thread.sleep(10000);
+        sp.deleteRecord();
+        Thread.sleep(3000);
+    }
 
     @ExcelDataProvider(fileName = "EastPennSupplierLoginValues.xlsx",tab = "testCase1")
     @Test(priority =1,groups = {"smoke", "regression"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
