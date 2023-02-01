@@ -173,11 +173,5 @@ public class ProductDataValidation extends WebTestBase
         Thread.sleep(20000);
         System.out.println("CS enrichment clicked");
         String actualText = prPage.csEnrichmentCompleteDD.getText();
-        System.out.println(actualText);
-
-        prPage.csEnrichmentComplete1.click();
-        Thread.sleep(20000);
-        System.out.println("CS enrichment clicked1");
-
     }
 }
