@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="SupplierTests" parallel="false" >
+<suite name="SupplierTests" parallel="false">
     <listeners>
         <listener class-name="com.volvo.project.components.listeners.TestngContentListener"/>
     </listeners>

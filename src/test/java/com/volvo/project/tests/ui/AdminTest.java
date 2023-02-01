@@ -8,6 +8,7 @@ import com.volvo.project.pages.*;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Stories;
 import io.qameta.allure.Story;
+import org.junit.Assert;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.annotations.Test;
 
@@ -18,55 +19,48 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Stories({@Story("user story 12345")})
 public class AdminTest extends WebTestBase {
     @ExcelDataProvider(fileName = "AdminLoginValues.xlsx",tab = "testCase1")
-    @Test(groups = {"smoke", "regression"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
-    public void verifyMetaDataFields(String name, String password,String col3) throws Exception {
-        dataProviderTestParameters.set(name + "," + password + ", + col3 + ");
-        step("Launch Browser and logged into SPIDR Application");
-        InternetHomePage homePage = new InternetLoginPage(getDriver())
-                .open()
-                .login(name, password);
-        step(
-                "Check if user is logged in",
-                () -> assertThat(homePage.isLoaded(col3)).isTrue()
-        );
-        Actions action = new Actions(getDriver());
-        VolvoCSDashBoardPage csDash = new VolvoCSDashBoardPage(getDriver());
-        homePage.hamburgeIcon();
-        homePage.stagingMenu();
-        homePage.volvo_Products_Staging_SubMenu();
-        Thread.sleep(2000);
-        System.out.println("Assign Taxonomy shortcut opened");
+    @Test(groups = {"smoke", "regression", "Admin"})
+    public void verifyMetaDataFields() throws Exception {
+        InternetLoginPage lp = new InternetLoginPage(getDriver());
+        lp.open();
+        lp.login("Supplier");
+        InternetHomePage homePage = new InternetHomePage(getDriver());
+        VolvoSupplierDashBoardPage supp = new VolvoSupplierDashBoardPage(getDriver());
+        supp.createNewPart();
+        homePage.logout();
+        lp.login("Admin");
+        homePage.openProductStaging();
         SearchPage sp = new SearchPage(getDriver());
-        sp.searchForRecord("TaxonomyTest");
-        homePage.productsStagingTab.click();
-        System.out.println("Part Searched");
+        sp.searchForRecord();
         Thread.sleep(10000);
-        sp.clickUsingJS(sp.searchedItemCheckbox);
-        System.out.println("Check box clicked");
-        sp.editButton.click();
-        System.out.println("Part opened");
+        sp.openRecord();
         Thread.sleep(20000);
         ProductPage prPage = new ProductPage(getDriver());
         prPage.changeViewToNoPreference();
         prPage.openBasicInfo();
-        prPage.scrollElementIntoView(prPage.digitalDropdown);
-        prPage.digitalDropdown.click();
-        Thread.sleep(1000);
+
         String supplierName = prPage.supplierName.getText();
         String manuName = prPage.manufacturerName.getText();
         String partDescription = prPage.supplierPartDescription.getText();
-        String partLongDescBrand = prPage.partLongDescBrand.getText();
+        prPage.scrollElementIntoView(prPage.digitalDropdown);
+        prPage.digitalDropdown.click();
+        Thread.sleep(1000);
         String brand = prPage.brand.getText();
         String metaTitle = prPage.metadataTitle.getText();
         String metaDescription = prPage.metadataDescription.getText();
         String metaKeywords = prPage.metadataKeywords.getText();
-        assertThat(metaTitle == supplierName+" Truck Parts, "+manuName+" Truck Parts, "+partDescription);
-        assertThat(metaDescription == partLongDescBrand);
-        assertThat(metaKeywords == brand + ", "+ supplierName + ", " + manuName + ", " + partDescription);
+        Assert.assertTrue(metaTitle.equals(supplierName + " Truck Parts, " + manuName + " Truck Parts, " + partDescription));
+        Assert.assertTrue(metaDescription.equals(partDescription));
+        Assert.assertTrue(metaKeywords.equals(brand + ", "+ supplierName + ", " + manuName + ", " + partDescription));
+        prPage.clickUsingJS(prPage.closePage);
+        Thread.sleep(10000);
+        sp.searchForRecord();
+        sp.deleteRecord();
+        Thread.sleep(3000);
     }
 
     @ExcelDataProvider(fileName = "AdminLoginValues.xlsx",tab = "testCase1")
-    @Test(groups = {"smoke", "regression"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
+    @Test(priority =100,groups = {"smoke", "regression"}, dataProvider = "getExcelDataFromFile", dataProviderClass = TestDataProvider.class)
     public void deleteProduct(String name, String password,String col3) throws Exception {
         String partNumber = "";
         dataProviderTestParameters.set(name + "," + password + ", + col3 + ");

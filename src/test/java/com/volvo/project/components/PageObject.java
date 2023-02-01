@@ -1,5 +1,6 @@
 package com.volvo.project.components;
 
+import com.volvo.project.components.datatdriventesting.ExcelLibrary;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
@@ -679,5 +680,17 @@ public class PageObject {
     protected void showWebElement(WebElement element) {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].style.visibility='visible'", element);
+    }
+
+    public void writeToMultiStepExcel(String partName) {
+        ExcelLibrary objExcelFile = new ExcelLibrary();
+        String multiMethodfilePath = "C:/testOpsJavaFramework/src/test/resources/testdata/MultipleMethodTestData.xlsx";
+        objExcelFile.writeToExcel(multiMethodfilePath, 0,0,partName);
+    }
+
+    public String readFromMultiStepExcel() {
+        ExcelLibrary objExcelFile = new ExcelLibrary();
+        String multiMethodfilePath = "src/test/resources/testdata/MultipleMethodTestData.xlsx";
+        return objExcelFile.readFromExcel(multiMethodfilePath, 0,0);
     }
 }

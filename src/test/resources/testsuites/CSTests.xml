@@ -1,42 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="SmokeTests">
+<suite name="SmokeTests" preserve-order="true">
     <listeners>
         <listener class-name="com.volvo.project.components.listeners.TestngContentListener"/>
     </listeners>
-    <test name="BrandedPartUpdate">
-        <classes>
-            <class name="com.volvo.project.tests.ui.SupplierTest">
-                <methods>
-                    <include name="editpartBrandedPart"></include>
-                </methods>
-            </class>
-            <class name="com.volvo.project.tests.ui.CSTest">
-                <methods>
-                    <include name="verifyBrandedPartUpdate"></include>
-                    <include name="loginTo_SPIDR_Application"></include>
-                    <include name="verifyNewPartsareSettoNewandAreUnderAssignTaxonomyShortcut"></include>
-                </methods>
-            </class>
-        </classes>
-    </test>
-    <test name="NewPart">
-        <classes>
-            <class name="com.volvo.project.tests.ui.SupplierTest">
-                <methods>
-                    <include name="verifySupplierIsAbleToImportProductFileIntoSPIDRApplication_ValidFiles"></include>
-                </methods>
-            </class>
-            <class name="com.volvo.project.tests.ui.CSTest">
-                <methods>
-                    <include name="verifyNewPartsareSettoNewandAreUnderAssignTaxonomyShortcut"></include>
-                </methods>
-            </class>
-            <class name="com.volvo.project.tests.ui.AdminTest">
-                <methods>
-                    <include name="deleteProduct"></include>
-                </methods>
-            </class>
-        </classes>
+    <test name="CS">
+        <groups>
+            <run>
+                <include name="CS"></include>
+            </run>
+        </groups>
     </test>
 </suite>
