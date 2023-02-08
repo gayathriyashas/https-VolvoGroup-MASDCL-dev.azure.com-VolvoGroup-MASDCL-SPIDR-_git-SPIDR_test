@@ -52,7 +52,55 @@ public class SupplierTest extends WebTestBase {
         sp.deleteRecord();
     }
 
-    @Test(groups = {"smoke", "regression, CS"})
+    @Test(groups = {"smoke", "regression", "supplier", "cost"})
+    public void verifySupplierCanCreateNewCost() throws InterruptedException, IOException {
+        InternetLoginPage lp = new InternetLoginPage(getDriver());
+        lp.open();
+        lp.login("Supplier");
+        InternetHomePage homePage = new InternetHomePage(getDriver());
+        VolvoSupplierDashBoardPage supp = new VolvoSupplierDashBoardPage(getDriver());
+        supp.createNewCost();
+        homePage.logout();
+        lp.login("Admin");
+        VolvoCSDashBoardPage csDash = new VolvoCSDashBoardPage(getDriver());
+        homePage.openCostStaging();
+        SearchPage sp = new SearchPage(getDriver());
+        sp.searchForRecord();
+        Thread.sleep(10000);
+        sp.openRecord();
+        Thread.sleep(10000);
+        CostPage costPage = new CostPage(getDriver());
+        costPage.verifynewImportFields();
+        costPage.closeCost();
+        Thread.sleep(3000);
+        sp.deleteRecord();
+    }
+
+    @Test(groups = {"smoke", "regression", "supplier", "cost"})
+    public void verifySupplierNoteAttribute() throws InterruptedException, IOException {
+        InternetLoginPage lp = new InternetLoginPage(getDriver());
+        lp.open();
+        lp.login("Supplier");
+        InternetHomePage homePage = new InternetHomePage(getDriver());
+        VolvoSupplierDashBoardPage supp = new VolvoSupplierDashBoardPage(getDriver());
+        supp.createNewCost_SupplierNote();
+        homePage.logout();
+        lp.login("Admin");
+        VolvoCSDashBoardPage csDash = new VolvoCSDashBoardPage(getDriver());
+        homePage.openCostStaging();
+        SearchPage sp = new SearchPage(getDriver());
+        sp.searchForRecord();
+        Thread.sleep(10000);
+        sp.openRecord();
+        Thread.sleep(10000);
+        CostPage costPage = new CostPage(getDriver());
+        costPage.verifySupplierNote();
+        costPage.closeCost();
+        Thread.sleep(3000);
+        sp.deleteRecord();
+    }
+
+    @Test(groups = {"smoke", "regression", "CS", "product"})
     public void verifyInternalPartNameEqualsPartDescription() throws Exception {
         InternetLoginPage lp = new InternetLoginPage(getDriver());
         lp.open();

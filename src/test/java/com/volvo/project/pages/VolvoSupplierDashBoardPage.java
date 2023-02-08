@@ -296,14 +296,7 @@ public class VolvoSupplierDashBoardPage extends PageObject {
         System.out.println("Parent window's handle -> " + parentWindowHandle);
         driver.switchTo().newWindow(WindowType.TAB);
 
-        if (InternetLoginPage.URL_INTERNET_LOGIN_PAGE.contains("wwglbn12562"))
-        {
-            driver.navigate().to("https://wwglbn12562.vcn.ds.volvo.net/www/client-custom/ProductImport.html");
-        }
-        else
-        {    // path double check
-            driver.navigate().to("http://wwglbn12567:81/www/client-custom/ProductImport.html");
-        }
+        driver.navigate().to("https://dev-supplierpartsmaster.volvo.net/www/client-custom/ProductImport.html");
 
         Thread.sleep(10000);
         Thread.sleep(10000);
@@ -363,14 +356,7 @@ public class VolvoSupplierDashBoardPage extends PageObject {
         System.out.println("Parent window's handle -> " + parentWindowHandle);
         driver.switchTo().newWindow(WindowType.TAB);
 
-        if (InternetLoginPage.URL_INTERNET_LOGIN_PAGE.contains("wwglbn12562"))
-        {
-            driver.navigate().to("https://wwglbn12562.vcn.ds.volvo.net/www/client-custom/CostImport.html");
-        }
-        else
-        {    // path double check
-            driver.navigate().to("http://wwglbn12567:81/www/client-custom/CostImport.html");
-        }
+        driver.navigate().to("https://dev-supplierpartsmaster.volvo.net/www/client-custom/CostImport.html");
 
         Thread.sleep(10000);
         Thread.sleep(10000);
@@ -544,15 +530,7 @@ public class VolvoSupplierDashBoardPage extends PageObject {
         System.out.println("Parent window's handle -> " + parentWindowHandle);
         driver.switchTo().newWindow(WindowType.TAB);
 
-        if (InternetLoginPage.URL_INTERNET_LOGIN_PAGE.contains("wwglbn12562"))
-        {
-            driver.navigate().to("https://wwglbn12562.vcn.ds.volvo.net/www/client-custom/Export.html");
-        }
-        else
-        {
-            driver.navigate().to("http://wwglbn12567:81/www/client-custom/Export.html");
-        }
-
+        driver.navigate().to("https://dev-supplierpartsmaster.volvo.net/www/client-custom/Export.html");
         Thread.sleep(10000);
         Thread.sleep(10000);
         WebElement clickElement = driver.findElement(By.xpath("//table[@class='fileUpload']//input[@id='DownloadRadioCost']"));
@@ -604,6 +582,41 @@ public class VolvoSupplierDashBoardPage extends PageObject {
         driver.switchTo().window(parentWindowHandle);
     }
 
+    public void createNewCost() throws InterruptedException, IOException {
+        verifySupplierDashboard();
+        exportCostData_RadioButton();
+        downloadUploadProgressOperation();
+        String filePath=VerifyZipFolderAndExtractFiles.unZipFolder();
+        //Excel File Existing row update operation
+        ExcelLibrary objExcelFile = new ExcelLibrary();
+        String partName = Utils.getRandomString(8).toUpperCase();
+        writeToMultiStepExcel(partName);
+        objExcelFile.writeToExcel(filePath,2,8,partName);
+        objExcelFile.writeToExcel(filePath,2,3,"Road Choice");
+        objExcelFile.writeToExcel(filePath,2,4,"CA");
+        objExcelFile.writeToExcel(filePath,2,23,"USD");
+        objExcelFile.writeToExcel(filePath,2,24,"01/01/2022");
+        objExcelFile.writeToExcel(filePath,2,25,"1");
+        objExcelFile.writeToExcel(filePath,2,36,"50");
+        clickChooseFileImportCostData();
+        getTotalProcessedRecordsUnderDownloadUploadProgress();
+    }
+
+    public void createNewCost_SupplierNote() throws InterruptedException, IOException {
+        verifySupplierDashboard();
+        exportCostData_RadioButton();
+        downloadUploadProgressOperation();
+        String filePath=VerifyZipFolderAndExtractFiles.unZipFolder();
+        //Excel File Existing row update operation
+        ExcelLibrary objExcelFile = new ExcelLibrary();
+        String partName = Utils.getRandomString(8).toUpperCase();
+        writeToMultiStepExcel(partName);
+        objExcelFile.writeToExcel(filePath,2,8,partName);
+        objExcelFile.writeToExcel(filePath,2,13,"Test Supplier Note");
+        clickChooseFileImportCostData();
+        getTotalProcessedRecordsUnderDownloadUploadProgress();
+    }
+
     public void createNewPart() throws InterruptedException, IOException {
         verifySupplierDashboard();
         exportProductData_RadioButton();
@@ -615,6 +628,7 @@ public class VolvoSupplierDashBoardPage extends PageObject {
         String partName = Utils.getRandomString(8).toUpperCase();
         writeToMultiStepExcel(partName);
         objExcelFile.writeToExcel(filePath,2,4,partName);
+        objExcelFile.writeToExcel(filePath,2,11,"123-456-789");
         objExcelFile.writeToExcel(filePath,2,5,partName+" description");
         objExcelFile.writeToExcel(filePath,2,28, "Uncategorized");
         clickChooseFileImportProductData();
