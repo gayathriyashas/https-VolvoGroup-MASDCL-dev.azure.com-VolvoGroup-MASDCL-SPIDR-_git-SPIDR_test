@@ -60,6 +60,8 @@ public class ProductPage extends PageObject {
     @FindBy(xpath = "//span[contains(text(), 'Supplier Part Description')]/../../../p/span")
     public WebElement supplierPartDescription;
 
+    @FindBy(xpath = "//span[contains(text(), 'Supplier Part Description')]/../../../..//textarea")
+    WebElement supplierPartDescriptionTextBox;
     @FindBy(xpath = "//span[contains(text(), 'Internal Part Name')]/../../../p/span")
     public WebElement internalPartNameAtt;
 
@@ -248,6 +250,17 @@ public class ProductPage extends PageObject {
         internalPartNameTextArea.sendKeys(Keys.DELETE);
         internalPartNameTextArea.sendKeys(newPartName);
         return newPartName;
+    }
+
+    public void partDescriptionChange(String newPartDescription) throws InterruptedException {
+        scrollElementIntoView(supplierPartDescription);
+        System.out.println("Scrolled to element");
+        Thread.sleep(10000);
+        supplierPartDescription.click();
+        Thread.sleep(1000);
+        supplierPartDescriptionTextBox.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+        supplierPartDescriptionTextBox.sendKeys(Keys.DELETE);
+        supplierPartDescriptionTextBox.sendKeys(newPartDescription);
     }
 
     public void verifyPart(String attributeChanged, String newValue) {

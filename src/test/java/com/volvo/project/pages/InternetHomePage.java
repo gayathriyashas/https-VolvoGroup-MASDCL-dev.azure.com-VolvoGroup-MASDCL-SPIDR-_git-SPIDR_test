@@ -10,6 +10,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
+import java.util.List;
+
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.Action;
 
@@ -38,9 +40,14 @@ public class InternetHomePage extends PageObject {
     @FindBy(xpath = "//div[@class='ng-star-inserted']//span[contains(text(),'Volvo Products Staging')]")
     private WebElement volvoProductsStagingSubMenuButton;
 
+    @FindBy(xpath = "//div[@class='ng-star-inserted']//span[contains(text(),'Volvo Suppliers Staging ')]")
+    private WebElement volvoSupplierStagingSubMenuButton;
+
     @FindBy(xpath = "//div[@class='ng-star-inserted']//span[contains(text(),'Volvo Cost Staging')]")
     private WebElement volvoCostStagingSubMenuButton;
 
+    @FindBy(id = "signoutIcon")
+    WebElement signOutButton;
     @FindBy(xpath = "//div[@class='cdk-overlay-container']//span[contains(text(),' Logout ')]")
     private WebElement logoutLink;
 
@@ -50,6 +57,8 @@ public class InternetHomePage extends PageObject {
     @FindBy(xpath = "//span[contains(text(), 'Volvo Products Staging')][2]")
     public WebElement volvoProductsStagingTabNew;
 
+    @FindBy(xpath = "//button[contains(text(), 'Yes')]")
+    WebElement yesPopupButton;
 
     public InternetHomePage(WebDriver driver) {
         super(driver);
@@ -98,8 +107,10 @@ public class InternetHomePage extends PageObject {
     @Step("Logout from application")
     public void logout() {
         try {
+            signOutButton.click();
             moveToElement(logoutLink);
             clickElement(logoutLink);
+            yesPopupButton.click();
         } catch (Exception e) {
             logger.info("Cannot find logout button");
         }
@@ -115,12 +126,15 @@ public class InternetHomePage extends PageObject {
     @Step("Select StagingMenu")
     public void stagingMenu() throws InterruptedException {
         Thread.sleep(10000);
-        WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(60));
-        wait.until(ExpectedConditions.elementToBeClickable(stagingMenuButton));
-       // stagingMenuButton.click();
-        Actions action = new Actions(driver);
-        action.moveToElement(stagingMenuButton).doubleClick().perform();
-        //return new InternetHomePage(driver);
+        List<WebElement> check = driver.findElements(By.xpath("//div[@class='ng-star-inserted']//span[contains(text(),'Volvo Suppliers Staging ')]"));
+        if(check.size() == 0) {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
+            wait.until(ExpectedConditions.elementToBeClickable(stagingMenuButton));
+            // stagingMenuButton.click();
+            Actions action = new Actions(driver);
+            action.moveToElement(stagingMenuButton).doubleClick().perform();
+            //return new InternetHomePage(driver);
+        }
     }
     @Step("Select Volvo Products Staging Sub Menu")
     public void volvo_Products_Staging_SubMenu() throws InterruptedException {
@@ -131,12 +145,22 @@ public class InternetHomePage extends PageObject {
         //return new InternetHomePage(driver);
     }
 
+    @Step("Select Volvo Suppliers Staging Sub Menu")
+    public void volvo_Suppliers_Staging_SubMenu() throws InterruptedException {
+        Thread.sleep(10000);
+        WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(60));
+        wait.until(ExpectedConditions.elementToBeClickable(volvoSupplierStagingSubMenuButton));
+        volvoSupplierStagingSubMenuButton.click();
+        //return new InternetHomePage(driver);
+    }
+
     @Step("Select Volvo Cost Staging Sub Menu")
     public void volvo_Cost_Staging_SubMenu() throws InterruptedException {
         Thread.sleep(10000);
         WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(60));
-        wait.until(ExpectedConditions.elementToBeClickable(volvoCostStagingSubMenuButton));
-        volvoCostStagingSubMenuButton.click();
+
+            wait.until(ExpectedConditions.elementToBeClickable(volvoCostStagingSubMenuButton));
+            volvoCostStagingSubMenuButton.click();
         //return new InternetHomePage(driver);
     }
 
@@ -170,6 +194,18 @@ public class InternetHomePage extends PageObject {
         hamburgeIcon();
         stagingMenu();
         volvo_Products_Staging_SubMenu();
+    }
+
+    public void openSupplierStaging() throws InterruptedException {
+        hamburgeIcon();
+        stagingMenu();
+        volvo_Suppliers_Staging_SubMenu();
+    }
+
+    public void openCostStaging() throws InterruptedException {
+        hamburgeIcon();
+        stagingMenu();
+        volvo_Cost_Staging_SubMenu();
     }
 
 }

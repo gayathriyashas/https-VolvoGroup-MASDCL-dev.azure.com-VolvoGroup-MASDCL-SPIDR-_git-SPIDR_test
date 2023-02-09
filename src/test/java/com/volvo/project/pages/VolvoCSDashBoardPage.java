@@ -2,6 +2,7 @@ package com.volvo.project.pages;
 
 import com.volvo.project.components.PageObject;
 import io.qameta.allure.Step;
+import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;

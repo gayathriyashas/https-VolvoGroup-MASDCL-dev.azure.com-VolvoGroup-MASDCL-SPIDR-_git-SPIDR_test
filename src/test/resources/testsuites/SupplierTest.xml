@@ -4,41 +4,11 @@
     <listeners>
         <listener class-name="com.volvo.project.components.listeners.TestngContentListener"/>
     </listeners>
-    <test name="Login">
-    <classes>
-        <class name="com.volvo.project.tests.ui.SupplierTest">
-            <methods>
-                <include name="loginTo_SPIDR_Application"></include>
-            </methods>
-        </class>
-    </classes>
-    </test>
-    <test name="CreateNewCost">
-        <classes>
-            <class name="com.volvo.project.tests.ui.SupplierTest">
-                <methods>
-                    <include name="verifySupplierIsAbleToImportCostFileIntoSPIDRApplication_ValidFiles"></include>
-                </methods>
-            </class>
-            <class name="com.volvo.project.tests.ui.AdminTest">
-                <methods>
-                    <include name="deleteCost"></include>
-                </methods>
-            </class>
-        </classes>
-    </test>
-    <test name="CreateNewProduct">
-        <classes>
-            <class name="com.volvo.project.tests.ui.SupplierTest">
-                <methods>
-                    <include name="verifySupplierIsAbleToImportProductFileIntoSPIDRApplication_ValidFiles"></include>
-                </methods>
-            </class>
-            <class name="com.volvo.project.tests.ui.AdminTest">
-                <methods>
-                    <include name="deleteProduct"></include>
-                </methods>
-            </class>
-        </classes>
+    <test name="CS">
+        <groups>
+            <run>
+                <include name="supplier"></include>
+            </run>
+        </groups>
     </test>
 </suite>
