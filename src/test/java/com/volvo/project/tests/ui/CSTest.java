@@ -18,8 +18,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Stories({@Story("user story 12345")})
 public class CSTest extends WebTestBase {
 
-    @ExcelDataProvider(fileName = "CSLoginValues.xlsx",tab = "testCase1")
-    @Test(groups = {"smoke", "regression, CS"})
+
+    @Test(groups = {"smoke", "regression", "CS"})
     public void loginTo_SPIDR_Application() throws InterruptedException {
         InternetLoginPage lp = new InternetLoginPage(getDriver());
         lp.open();
@@ -31,7 +31,7 @@ public class CSTest extends WebTestBase {
         homePage.logout();
     }
 
-    @Test(groups = {"smoke", "regression, CS"})
+    @Test(groups = {"smoke", "regression", "CS"})
     public void NewPartImportedCorrectly() throws Exception {
         InternetLoginPage lp = new InternetLoginPage(getDriver());
         lp.open();
@@ -62,7 +62,7 @@ public class CSTest extends WebTestBase {
         sp.deleteRecord();
     }
 
-    @Test(groups = {"smoke", "regression, CS"})
+    @Test(groups = {"smoke", "regression", "CS"})
     public void EditBrand() throws Exception {
         InternetLoginPage lp = new InternetLoginPage(getDriver());
         lp.open();
@@ -110,7 +110,7 @@ public class CSTest extends WebTestBase {
         Thread.sleep(3000);
     }
 
-    @Test(groups = {"smoke", "regression, CS"})
+    @Test(groups = {"smoke", "regression", "CS"})
     public void EditCSA() throws Exception {
         InternetLoginPage lp = new InternetLoginPage(getDriver());
         lp.open();
@@ -159,7 +159,7 @@ public class CSTest extends WebTestBase {
         Thread.sleep(3000);
     }
 
-    @Test(groups = {"smoke", "regression, CS"})
+    @Test(groups = {"smoke", "regression", "CS"})
     public void EditSupersession() throws Exception {
         InternetLoginPage lp = new InternetLoginPage(getDriver());
         lp.open();
@@ -209,7 +209,7 @@ public class CSTest extends WebTestBase {
         Thread.sleep(3000);
     }
 
-    @Test(groups = {"smoke", "regression, CS"})
+    @Test(groups = {"smoke", "regression", "CS"})
     public void verifyCSCanEditInternalPartName() throws Exception {
         InternetLoginPage lp = new InternetLoginPage(getDriver());
         lp.open();

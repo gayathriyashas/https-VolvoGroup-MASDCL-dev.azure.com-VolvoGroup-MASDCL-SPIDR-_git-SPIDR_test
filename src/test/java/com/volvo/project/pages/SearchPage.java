@@ -86,7 +86,6 @@ public class SearchPage extends PageObject {
             for (int i = 1; i <= 20; i++) {
                 Thread.sleep(4000);
                 System.out.println("Record Number: " + getRecordNumber());
-                System.out.println("Supplier name: "+recordSupplierName.getText().trim());
                 if (getRecordNumber() == 0 || recordSupplierName.getText().trim().length() == 0) {
                     Thread.sleep(20000);
                     Thread.sleep(20000);

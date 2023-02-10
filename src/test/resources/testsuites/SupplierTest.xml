@@ -4,11 +4,14 @@
     <listeners>
         <listener class-name="com.volvo.project.components.listeners.TestngContentListener"/>
     </listeners>
-    <test name="CS">
+    <test name="Supplier">
         <groups>
             <run>
                 <include name="supplier"></include>
             </run>
         </groups>
+        <classes>
+            <class name="com.volvo.project.tests.ui.SupplierTest"></class>
+        </classes>
     </test>
 </suite>
