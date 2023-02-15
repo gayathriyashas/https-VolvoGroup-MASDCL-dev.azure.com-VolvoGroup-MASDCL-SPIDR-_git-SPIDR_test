@@ -10,5 +10,10 @@
                 <include name="CS"></include>
             </run>
         </groups>
+        <classes>
+            <class name="com.volvo.project.tests.ui.CSTest">
+                <methods><include name=""</methods>
+            </class>
+        </classes>
     </test>
 </suite>

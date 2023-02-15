@@ -70,6 +70,8 @@ public class SupplierTest extends WebTestBase {
         sp.openRecord();
         Thread.sleep(10000);
         CostPage costPage = new CostPage(getDriver());
+        costPage.changeViewToNoPreference();
+        Thread.sleep(10000);
         costPage.verifynewImportFields();
         costPage.closeCost();
         Thread.sleep(3000);
@@ -95,6 +97,30 @@ public class SupplierTest extends WebTestBase {
         Thread.sleep(10000);
         CostPage costPage = new CostPage(getDriver());
         costPage.verifySupplierNote();
+        costPage.closeCost();
+        Thread.sleep(3000);
+        sp.deleteRecord();
+    }
+
+    @Test(groups = {"smoke", "regression", "supplier", "cost"})
+    public void verifyLhelpCountryCodeAttribute() throws InterruptedException, IOException {
+        InternetLoginPage lp = new InternetLoginPage(getDriver());
+        lp.open();
+        lp.login("Supplier");
+        InternetHomePage homePage = new InternetHomePage(getDriver());
+        VolvoSupplierDashBoardPage supp = new VolvoSupplierDashBoardPage(getDriver());
+        supp.createNewCost_CountryofOrigin();
+        homePage.logout();
+        lp.login("Admin");
+        VolvoCSDashBoardPage csDash = new VolvoCSDashBoardPage(getDriver());
+        homePage.openCostStaging();
+        SearchPage sp = new SearchPage(getDriver());
+        sp.searchForRecord();
+        Thread.sleep(10000);
+        sp.openRecord();
+        Thread.sleep(10000);
+        CostPage costPage = new CostPage(getDriver());
+        costPage.verifyCountryofOrigin();
         costPage.closeCost();
         Thread.sleep(3000);
         sp.deleteRecord();

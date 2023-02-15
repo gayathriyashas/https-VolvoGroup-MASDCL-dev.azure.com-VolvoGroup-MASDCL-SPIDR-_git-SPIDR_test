@@ -1,6 +1,7 @@
 package com.volvo.project.pages;
 
 import com.volvo.project.components.PageObject;
+import io.qameta.allure.Step;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -15,7 +16,17 @@ public class CostPage extends PageObject
         super(driver);
     }
 
+    @FindBy(xpath =  "//span[@class='title-switch ng-star-inserted']")
+    WebElement viewDropDown;
+
+    @FindBy(xpath = "//div[@class='mat-menu-content']/button[1]/span")
+    WebElement noPreferenceView;
+
     //dropdowns
+
+    @FindBy(id = "Basic Info")
+    public WebElement basicInfoDropdown;
+
     @FindBy(id = "Cost")
     public WebElement costDropdown;
 
@@ -52,6 +63,12 @@ public class CostPage extends PageObject
     @FindBy(xpath = "//span[contains(text(), 'Order in Multiples of Level 1')]/../../../p/span")
     public WebElement orderInMultiplesOf1;
 
+    @FindBy(xpath = "//span[contains(text(), 'Country of Origin')]/../../../p/span[1]")
+    public WebElement countryofOrigin;
+
+    @FindBy(xpath = "//span[contains(text(), 'Lhelp Country Code')]/../../../p/span[1]")
+    public WebElement lhelpCountryCode;
+
     @FindBy(xpath = "//span[contains(text(), 'Minimum Order Qty')]/../../../p/span")
     public WebElement minimumOrderQty;
 
@@ -65,6 +82,25 @@ public class CostPage extends PageObject
     @FindBy(xpath = "//tabset//li[3]//span[3]")
     public WebElement closePage;
 
+    public void closeCost() {
+        moveToElement(closePage);
+        clickUsingJS(closePage);
+    }
+
+    @Step("Change view to No Preference")
+    public void changeViewToNoPreference() throws InterruptedException {
+        viewDropDown.click();
+        Thread.sleep(1000);
+        noPreferenceView.click();
+        Thread.sleep(1000);
+    }
+    public void openBasicInfo() throws InterruptedException {
+        if(driver.findElements(By.xpath("//span[contains(text(), 'Cost Supplier ID')]/../../../p/span")).size() == 0) {
+            basicInfoDropdown.click();
+            Thread.sleep(1000);
+        }
+    }
+
     public void  openCosts() throws InterruptedException {
     if(driver.findElements(By.xpath("//span[contains(text(), 'Cost Impact Amount Level 1')]/../../../p/span")).size() == 0) {
         costDropdown.click();
@@ -72,16 +108,12 @@ public class CostPage extends PageObject
     }
 }
 
-    public void closeCost() {
-         moveToElement(closePage);
-         clickUsingJS(closePage);
-    }
-
     public void verifynewImportFields() throws InterruptedException {
+        openBasicInfo();
         scrollElementIntoView(costSupplierID);
         Assert.assertTrue(costSupplierID.getText() .equals("109507"));
         scrollElementIntoView(supplierName);
-        Assert.assertTrue(supplierName.getText().equals("Di-Pro DEV"));
+        Assert.assertTrue(supplierName.getText().equals("Di-Pro"));
         scrollElementIntoView(partStatus);
         Assert.assertTrue(partStatus.getText().equals("New"));
         scrollElementIntoView(originalSupplierPartNumber);
@@ -105,9 +137,18 @@ public class CostPage extends PageObject
         Assert.assertTrue(costLevel1.getText().equals("50.00"));
     }
 
-    public void verifySupplierNote() {
+    public void verifySupplierNote() throws InterruptedException {
+        openBasicInfo();
         scrollElementIntoView(supplierNote);
         Assert.assertTrue(supplierNote.getText().equals("Test Supplier Note"));
+    }
+
+    public void verifyCountryofOrigin() throws InterruptedException {
+        openBasicInfo();
+        scrollElementIntoView(countryofOrigin);
+        Assert.assertTrue(countryofOrigin.getText().equals("BR"));
+        scrollElementIntoView(lhelpCountryCode);
+        Assert.assertTrue(lhelpCountryCode.getText().equals("70"));
     }
 
 }

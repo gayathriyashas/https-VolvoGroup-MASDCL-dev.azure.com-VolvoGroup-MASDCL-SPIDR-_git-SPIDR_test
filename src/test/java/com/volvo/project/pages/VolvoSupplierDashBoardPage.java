@@ -4,6 +4,7 @@ import com.volvo.project.components.PageObject;
 import com.volvo.project.components.Utils;
 import com.volvo.project.components.datatdriventesting.ExcelLibrary;
 import com.volvo.project.components.fileoperations.VerifyZipFolderAndExtractFiles;
+import com.volvo.project.pages.InternetLoginPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
@@ -18,6 +19,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.Set;
+
+import static com.volvo.project.pages.InternetLoginPage.URL_INTERNET_LOGIN_PAGE;
 
 public class VolvoSupplierDashBoardPage extends PageObject {
     //private static final String SEARCH_PMR_FORM_NAME = "Welcome to the Secure Area. When you are done click logout below.";
@@ -78,14 +81,7 @@ public class VolvoSupplierDashBoardPage extends PageObject {
         System.out.println("Parent window's handle -> " + parentWindowHandle);
         driver.switchTo().newWindow(WindowType.TAB);
 
-        if (InternetLoginPage.URL_INTERNET_LOGIN_PAGE.contains("wwglbn12562"))
-        {
-            driver.navigate().to("https://wwglbn12562.vcn.ds.volvo.net/www/client-custom/Export.html");
-        }
-        else
-        {
-            driver.navigate().to("http://wwglbn12567:81/www/client-custom/Export.html");
-        }
+        driver.navigate().to("https://qa-supplierpartsmaster.volvo.com/www/client-custom/Export.html");
 
         Thread.sleep(10000);
         Thread.sleep(10000);
@@ -296,7 +292,7 @@ public class VolvoSupplierDashBoardPage extends PageObject {
         System.out.println("Parent window's handle -> " + parentWindowHandle);
         driver.switchTo().newWindow(WindowType.TAB);
 
-        driver.navigate().to("https://dev-supplierpartsmaster.volvo.net/www/client-custom/ProductImport.html");
+        driver.navigate().to("https://qa-supplierpartsmaster.volvo.com/www/client-custom/ProductImport.html");
 
         Thread.sleep(10000);
         Thread.sleep(10000);
@@ -356,7 +352,7 @@ public class VolvoSupplierDashBoardPage extends PageObject {
         System.out.println("Parent window's handle -> " + parentWindowHandle);
         driver.switchTo().newWindow(WindowType.TAB);
 
-        driver.navigate().to("https://dev-supplierpartsmaster.volvo.net/www/client-custom/CostImport.html");
+        driver.navigate().to("https://qa-supplierpartsmaster.volvo.com/www/client-custom/CostImport.html");
 
         Thread.sleep(10000);
         Thread.sleep(10000);
@@ -530,7 +526,7 @@ public class VolvoSupplierDashBoardPage extends PageObject {
         System.out.println("Parent window's handle -> " + parentWindowHandle);
         driver.switchTo().newWindow(WindowType.TAB);
 
-        driver.navigate().to("https://dev-supplierpartsmaster.volvo.net/www/client-custom/Export.html");
+        driver.navigate().to("https://qa-supplierpartsmaster.volvo.com/www/client-custom/Export.html");
         Thread.sleep(10000);
         Thread.sleep(10000);
         WebElement clickElement = driver.findElement(By.xpath("//table[@class='fileUpload']//input[@id='DownloadRadioCost']"));
@@ -598,6 +594,7 @@ public class VolvoSupplierDashBoardPage extends PageObject {
         objExcelFile.writeToExcel(filePath,2,24,"01/01/2022");
         objExcelFile.writeToExcel(filePath,2,25,"1");
         objExcelFile.writeToExcel(filePath,2,36,"50");
+        objExcelFile.writeToExcel(filePath,2,68,"1");
         clickChooseFileImportCostData();
         getTotalProcessedRecordsUnderDownloadUploadProgress();
     }
@@ -613,6 +610,21 @@ public class VolvoSupplierDashBoardPage extends PageObject {
         writeToMultiStepExcel(partName);
         objExcelFile.writeToExcel(filePath,2,8,partName);
         objExcelFile.writeToExcel(filePath,2,13,"Test Supplier Note");
+        clickChooseFileImportCostData();
+        getTotalProcessedRecordsUnderDownloadUploadProgress();
+    }
+
+    public void createNewCost_CountryofOrigin() throws InterruptedException, IOException {
+        verifySupplierDashboard();
+        exportCostData_RadioButton();
+        downloadUploadProgressOperation();
+        String filePath=VerifyZipFolderAndExtractFiles.unZipFolder();
+        //Excel File Existing row update operation
+        ExcelLibrary objExcelFile = new ExcelLibrary();
+        String partName = Utils.getRandomString(8).toUpperCase();
+        writeToMultiStepExcel(partName);
+        objExcelFile.writeToExcel(filePath,2,8,partName);
+        objExcelFile.writeToExcel(filePath,2,22,"BR");
         clickChooseFileImportCostData();
         getTotalProcessedRecordsUnderDownloadUploadProgress();
     }
