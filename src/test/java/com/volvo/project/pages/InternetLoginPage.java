@@ -15,10 +15,10 @@ public class InternetLoginPage extends PageObject {
     //private static final String URL_INTERNET_LOGIN_PAGE = "https://the-internet.herokuapp.com/login";
 
     //<!--QA URL-->
-    public static final String URL_INTERNET_LOGIN_PAGE = "https://qa-supplierpartsmaster.volvo.com/enable2020/";
+   // public static final String URL_INTERNET_LOGIN_PAGE = "https://qa-supplierpartsmaster.volvo.com/enable2020/";
 
     //<!--DEV URL-->
-    //public static final String URL_INTERNET_LOGIN_PAGE = "http://wwglbn12567:81/enable2020/login";
+   public static final String URL_INTERNET_LOGIN_PAGE = "https://dev-supplierpartsmaster.volvo.net/enable2020/login";
 
     @FindBy(xpath = "//div[@class='login-form']//input[@placeholder='Username']")
     private WebElement userNameField;
@@ -90,4 +90,19 @@ public class InternetLoginPage extends PageObject {
                 () -> assertThat(homePage.isLoaded(loginLabel)).isTrue()
         );
     }
+
+    @Step("Open Internet Login Page")
+    public InternetLoginPage openQA() {
+        driver.get("https://qa-supplierpartsmaster.volvo.com/enable2020/");
+        driver.manage().window().maximize();
+        return this;
+    }
+
+    @Step("Open Internet Login Page")
+    public InternetLoginPage openPROD() {
+        driver.get("https://supplierpartsmaster.volvo.com/enable2020/");
+        driver.manage().window().maximize();
+        return this;
+    }
+
 }

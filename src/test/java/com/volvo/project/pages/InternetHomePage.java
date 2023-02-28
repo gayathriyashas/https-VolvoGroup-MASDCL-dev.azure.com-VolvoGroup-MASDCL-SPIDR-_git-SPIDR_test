@@ -1,10 +1,7 @@
 package com.volvo.project.pages;
 
-import com.ibm.msg.client.commonservices.Log.Log;
 import com.volvo.project.components.PageObject;
-import com.volvo.project.components.datatdriventesting.ExcelLibrary;
 import io.qameta.allure.Step;
-import org.apache.xml.utils.StringComparable;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -13,7 +10,7 @@ import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.interactions.Action;
+import org.testng.Assert;
 
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,6 +28,13 @@ public class InternetHomePage extends PageObject {
 
     @FindBy(xpath = "//li//mat-icon[@svgicon='profile']")
     private WebElement profileMenuButton;
+
+    @FindBy(xpath = "//i[@aria-label='Impersonate']")
+    public WebElement impersonateButton;
+
+    @FindBy(xpath = "//span[contains(text(),' East  Penn ')]")
+    public WebElement eastPennSupplier;
+
     @FindBy(id = "hamburgerButton")
     private WebElement hamburgeButton;
     @FindBy(xpath = "//input[@id='inputLogin3' or @placeholder='Search']")
@@ -91,7 +95,7 @@ public class InternetHomePage extends PageObject {
         {
             System.out.println("Some Exception happened");
             System.out.println("Not Match found");
-            //Log.Info("Actual is : " + actual + "and Expected is : " + expected);
+            //Logger.Info("Actual is : " + actual + "and Expected is : " + expected);
             return false;
         }
         return true;
@@ -206,6 +210,30 @@ public class InternetHomePage extends PageObject {
         hamburgeIcon();
         stagingMenu();
         volvo_Cost_Staging_SubMenu();
+    }
+
+    public void verifyDevURL(){
+       String actualURL= driver.getCurrentUrl();
+       String expectedURL = "https://dev-supplierpartsmaster.volvo.net/enable2020/dashboard";
+        Assert.assertEquals(actualURL, expectedURL);
+
+    }
+
+    public void verifyQAURL(){
+        String actualURL= driver.getCurrentUrl();
+        String expectedURL = "https://qa-supplierpartsmaster.volvo.com/enable2020/";
+        Assert.assertEquals(actualURL, expectedURL);
+    }
+
+    public void verifyProdURL(){
+        String actualURL= driver.getCurrentUrl();
+        String expectedURL = "https://supplierpartsmaster.volvo.com/enable2020/";
+        Assert.assertEquals(actualURL, expectedURL);
+    }
+
+    public boolean verifyProfileButton(){
+      boolean btnstatus = profileMenuButton.isDisplayed();
+        return btnstatus;
     }
 
 }

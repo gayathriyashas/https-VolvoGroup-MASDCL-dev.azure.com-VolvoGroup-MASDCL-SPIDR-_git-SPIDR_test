@@ -28,7 +28,7 @@ public class ProductPage extends PageObject {
     WebElement categorySpecificArrtibutesTab;
 
     @FindBy(xpath = "//span[contains(text(), 'Part Data')]")
-    WebElement partDataTab;
+    public WebElement partDataTab;
 
     @FindBy(xpath = "//span[contains(text(), 'Admin')]")
     WebElement adminTab;

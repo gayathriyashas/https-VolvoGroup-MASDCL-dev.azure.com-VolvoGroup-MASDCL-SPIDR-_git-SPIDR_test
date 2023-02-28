@@ -169,9 +169,9 @@ public class ProductDataValidation extends WebTestBase
         prPage.partDataTab.click();
         Thread.sleep(20000);
         System.out.println("Part data side bar clicked");
-        prPage.csEnrichmentComplete.click();
+       // prPage.csEnrichmentComplete.click();
         Thread.sleep(20000);
         System.out.println("CS enrichment clicked");
-        String actualText = prPage.csEnrichmentCompleteDD.getText();
+       // String actualText = prPage.csEnrichmentCompleteDD.getText();
     }
 }

@@ -208,4 +208,19 @@ public class AdminTest extends WebTestBase {
         sp.deleteYes.click();
         Thread.sleep(1000);
     }
+
+
+    @ExcelDataProvider(fileName = "AdminLoginValues.xlsx",tab = "testCase1")
+   @Test(groups = {"smoke", "regression"})
+    public void adminImpersonateAsSupplier() throws InterruptedException
+    {
+       InternetLoginPage lp = new InternetLoginPage(getDriver());
+       InternetHomePage hp = new InternetHomePage(getDriver());
+       lp.open();
+       Thread.sleep(5000);
+       hp.impersonateButton.click();
+       Thread.sleep(5000);
+       hp.eastPennSupplier.click();
+       Thread.sleep(1000);
+    }
 }

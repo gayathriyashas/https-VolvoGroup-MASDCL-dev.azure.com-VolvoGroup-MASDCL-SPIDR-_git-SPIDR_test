@@ -693,4 +693,5 @@ public class PageObject {
         String multiMethodfilePath = "src/test/resources/testdata/MultipleMethodTestData.xlsx";
         return objExcelFile.readFromExcel(multiMethodfilePath, 0,0);
     }
-}
+
+   }
