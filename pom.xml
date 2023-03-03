@@ -79,10 +79,10 @@
                     <parallel>methods</parallel>
                     <threadCount>1</threadCount>
                     <suiteXmlFiles>
-                        <suiteXmlFile>${testng.configuration}</suiteXmlFile>
+                        <suiteXmlFile>testng.xml</suiteXmlFile>
                     </suiteXmlFiles>
                     <includes>
-                        <include>**/**/*Test.*</include>
+                        <include>name="Admin"</include>
                     </includes>
                     <systemPropertyVariables>
                         <allure.results.directory>target/allure-results</allure.results.directory>

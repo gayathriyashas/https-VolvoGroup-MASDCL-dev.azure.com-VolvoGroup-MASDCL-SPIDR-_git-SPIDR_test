@@ -7,7 +7,7 @@
     <test name="EnvLoginTest">
         <groups>
             <run>
-                <include name="Admin"></include>
+                <include name="smoke"></include>
             </run>
         </groups>
         <classes>

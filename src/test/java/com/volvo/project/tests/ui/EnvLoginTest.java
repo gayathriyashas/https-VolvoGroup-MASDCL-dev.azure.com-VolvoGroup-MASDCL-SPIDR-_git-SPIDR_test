@@ -22,6 +22,8 @@ public class  EnvLoginTest extends WebTestBase
     lp.login("system", "system");
     Thread.sleep(10000);
     hp.verifyDevURL();
+    logger.info("DEV environment is up and running");
+    System.out.println("DEV environment is up and running");
     Thread.sleep(10000);
 }
 
@@ -34,6 +36,7 @@ public class  EnvLoginTest extends WebTestBase
         Thread.sleep(10000);
         hp.verifyQAURL();
         logger.info("QA environment is up and running");
+        System.out.println("QA environment is up and running");
     }
 
     @Test(groups = {"smoke", "regression", "Admin"})
@@ -45,6 +48,7 @@ public class  EnvLoginTest extends WebTestBase
         Thread.sleep(2000);
         hp.verifyProdURL();
         logger.info("PROD environment is up and running");
+        System.out.println("PROD environment is up and running");
     }
 
 }
